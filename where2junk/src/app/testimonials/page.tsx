@@ -1,18 +1,12 @@
 import type { Metadata } from 'next';
+import TestimonialsClient from './TestimonialsClient';
 
 export const metadata: Metadata = {
-  title: 'Testimonials | Where2 Junk Removal Manchester NH',
+  title: 'Customer Reviews | Where2 Junk Removal Manchester NH',
+  description:
+    '32 real reviews from Manchester, NH homeowners. See what customers say about Where2 Junk Removal Services LLC.',
 };
 
 export default function TestimonialsPage() {
-  return (
-    <main className="min-h-screen bg-[var(--bg-base)]">
-      {/* TODO: Build testimonials page */}
-      <div className="container mx-auto px-4 py-24 text-center">
-        <h1 className="text-4xl font-display font-black uppercase text-[var(--text-primary)]">
-          Testimonials
-        </h1>
-      </div>
-    </main>
-  );
+  return <TestimonialsClient />;
 }
