@@ -41,6 +41,28 @@ export default async function BlogPostPage({ params }: Props) {
 
   return (
     <main style={{ background: 'var(--bg-base)' }}>
+      {/* ── Structured Data ── */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'Article',
+            headline: post.title,
+            description: post.excerpt,
+            datePublished: post.publishedAt,
+            author: {
+              '@type': 'Organization',
+              name: 'Where2 Junk Removal Services LLC',
+            },
+            publisher: {
+              '@type': 'Organization',
+              name: 'Where2 Junk Removal Services LLC',
+              url: 'https://where2junk.com',
+            },
+          }),
+        }}
+      />
       {/* Article header */}
       <section className="pt-24 pb-8" style={{ background: 'var(--bg-base)' }}>
         <div className="max-w-[var(--container-max)] mx-auto px-4 sm:px-6 lg:px-8">

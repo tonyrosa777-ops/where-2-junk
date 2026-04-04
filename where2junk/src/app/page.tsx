@@ -22,6 +22,45 @@ export const metadata: Metadata = {
 export default function HomePage() {
   return (
     <main className="min-h-screen bg-[var(--bg-base)]">
+      {/* ── Structured Data ── */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': ['LocalBusiness', 'HomeAndConstructionBusiness'],
+            name: siteData.meta.name,
+            telephone: siteData.meta.phone,
+            email: siteData.meta.email,
+            address: {
+              '@type': 'PostalAddress',
+              streetAddress: siteData.meta.address.street,
+              addressLocality: 'Manchester',
+              addressRegion: 'NH',
+              postalCode: siteData.meta.address.zip,
+              addressCountry: 'US',
+            },
+            url: 'https://where2junk.com',
+            openingHours: ['Mo-Sa 07:00-19:00'],
+            priceRange: '$$',
+            areaServed: [
+              { '@type': 'City', name: 'Manchester' },
+              { '@type': 'City', name: 'Nashua' },
+            ],
+          }),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'WebSite',
+            name: siteData.meta.name,
+            url: 'https://where2junk.com',
+          }),
+        }}
+      />
       {/* 1 — bg-base */}
       <Hero />
       {/* 2 — bg-elevated */}

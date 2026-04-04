@@ -40,6 +40,11 @@ export const metadata: Metadata = {
     siteName: 'Where2 Junk Removal Services LLC',
     locale: 'en_US',
     type: 'website',
+    images: [{ url: '/images/og-image.jpg', width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    images: ['/images/og-image.jpg'],
   },
   robots: { index: true, follow: true },
 };

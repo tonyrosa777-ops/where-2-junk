@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { siteData } from '@/data/site';
 import FAQClient from './FAQClient';
 
 export const metadata: Metadata = {
@@ -8,5 +9,23 @@ export const metadata: Metadata = {
 };
 
 export default function FaqPage() {
-  return <FAQClient />;
+  const faqSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: siteData.faq.map((item) => ({
+      '@type': 'Question',
+      name: item.question,
+      acceptedAnswer: { '@type': 'Answer', text: item.answer },
+    })),
+  };
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
+      <FAQClient />
+    </>
+  );
 }

@@ -33,6 +33,24 @@ export default async function ServiceDetailPage({ params }: Props) {
 
   return (
     <main className="min-h-screen" style={{ background: 'var(--bg-base)' }}>
+      {/* ── Structured Data ── */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'Service',
+            name: service.title,
+            description: service.description,
+            provider: {
+              '@type': 'LocalBusiness',
+              name: 'Where2 Junk Removal Services LLC',
+              url: 'https://where2junk.com',
+            },
+            areaServed: { '@type': 'State', name: 'New Hampshire' },
+          }),
+        }}
+      />
 
       {/* ─── Service Hero ───────────────────────────────────────── */}
       <section
