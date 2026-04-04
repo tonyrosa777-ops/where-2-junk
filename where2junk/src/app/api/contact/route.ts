@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
+import { Resend } from 'resend';
 
 const contactSchema = z.object({
   name: z.string().min(2),
@@ -13,11 +14,28 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const data = contactSchema.parse(body);
 
-    // TODO: Wire Resend in infrastructure phase
-    // const resend = new Resend(process.env.RESEND_API_KEY);
-    // await resend.emails.send({ ... });
+    if (process.env.RESEND_API_KEY) {
+      const resend = new Resend(process.env.RESEND_API_KEY);
+      const to = process.env.RESEND_NOTIFICATION_EMAIL ?? 'hello@where2junk.com';
+      const from = process.env.RESEND_FROM_EMAIL ?? 'noreply@where2junk.com';
 
-    console.log('Contact form submission:', data);
+      await resend.emails.send({
+        from,
+        to,
+        subject: `New Contact Form: ${data.name}`,
+        text: [
+          `Name: ${data.name}`,
+          `Phone: ${data.phone}`,
+          data.email ? `Email: ${data.email}` : null,
+          ``,
+          `Message:`,
+          data.message,
+        ]
+          .filter((l) => l !== null)
+          .join('\n'),
+      });
+    }
+
     return NextResponse.json({ success: true });
   } catch (err) {
     if (err instanceof z.ZodError) {
