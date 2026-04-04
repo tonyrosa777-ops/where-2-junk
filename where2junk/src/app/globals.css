@@ -173,3 +173,37 @@ body {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ── Blog article prose ── */
+.article-prose {
+  color: var(--text-secondary);
+  max-width: 72ch;
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  line-height: 1.75;
+}
+.article-prose h2 {
+  font-family: var(--font-display);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+  color: var(--text-primary);
+  margin-top: 2em;
+  margin-bottom: 0.5em;
+}
+.article-prose p {
+  margin-bottom: 1.25em;
+}
+.article-prose ul {
+  padding-left: 1.5em;
+  margin-bottom: 1.25em;
+  list-style: disc;
+}
+.article-prose li {
+  margin-bottom: 0.5em;
+}
+.article-prose strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
