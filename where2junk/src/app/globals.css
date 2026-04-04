@@ -100,6 +100,71 @@ body {
 .speed-line-delay-2 { animation-delay: 0.8s; }
 .speed-line-delay-3 { animation-delay: 1.2s; }
 
+/* ── Hero SVG lightning bolt animation ── */
+@keyframes boltFlicker {
+  0%, 100% { opacity: 0; }
+  5%        { opacity: 0.9; }
+  10%       { opacity: 0.4; }
+  15%       { opacity: 1; }
+  25%       { opacity: 0; }
+}
+.hero-bolt {
+  opacity: 0;
+  animation: boltFlicker var(--dur, 4s) ease-in-out infinite var(--delay, 0s);
+}
+
+/* ── Hero floating particle ── */
+@keyframes particleFloat {
+  0%        { opacity: 0; transform: translateY(0) scale(1); }
+  20%       { opacity: var(--p-opacity, 0.5); }
+  80%       { opacity: var(--p-opacity, 0.5); }
+  100%      { opacity: 0; transform: translateY(-18px) scale(0.6); }
+}
+.hero-particle {
+  animation: particleFloat var(--dur, 4s) ease-in-out infinite var(--delay, 0s);
+}
+
+/* ── Hero pulse ring ── */
+@keyframes ringPulse {
+  0%   { transform: translate(-50%, -50%) scale(0); opacity: 0.5; }
+  100% { transform: translate(-50%, -50%) scale(220); opacity: 0; }
+}
+.hero-ring {
+  animation: ringPulse var(--dur, 4s) ease-out infinite var(--delay, 0s);
+}
+
+/* ── Hero breathing central glow ── */
+@keyframes glowBreathe {
+  0%, 100% { opacity: 0.12; }
+  50%       { opacity: 0.22; }
+}
+.hero-glow-breathe {
+  animation: glowBreathe 5s ease-in-out infinite;
+}
+
+/* ── Hero arc dash ── */
+@keyframes arcDash {
+  0%   { stroke-dashoffset: 80; opacity: 0.4; }
+  50%  { opacity: 0.7; }
+  100% { stroke-dashoffset: -80; opacity: 0; }
+}
+.hero-arc-dash  { animation: arcDash 6s linear infinite; }
+.hero-arc-dash-2 { animation: arcDash 8s linear infinite 2s; }
+
+/* ── Hero scan line ── */
+@keyframes scanLine {
+  0%   { top: 0%; opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}
+.hero-scanline {
+  position: absolute;
+  left: 0; right: 0;
+  height: 1px;
+  animation: scanLine 7s linear infinite;
+}
+
 /* ── Reduced motion: disable all animations ── */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
