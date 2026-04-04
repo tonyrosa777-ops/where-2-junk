@@ -1,6 +1,9 @@
 import type { Metadata } from 'next';
 import { Barlow_Condensed, Barlow, JetBrains_Mono } from 'next/font/google';
 import './globals.css';
+import Header from '@/components/layout/Header';
+import Footer from '@/components/layout/Footer';
+import StickyCallBar from '@/components/layout/StickyCallBar';
 
 const barlowCondensed = Barlow_Condensed({
   variable: '--font-barlow-condensed',
@@ -50,7 +53,10 @@ export default function RootLayout({
       className={`${barlowCondensed.variable} ${barlow.variable} ${jetbrainsMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-[var(--bg-base)] text-[var(--text-primary)]">
+        <Header />
         {children}
+        <Footer />
+        <StickyCallBar />
       </body>
     </html>
   );

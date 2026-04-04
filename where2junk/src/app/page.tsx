@@ -1,6 +1,18 @@
 import type { Metadata } from 'next';
 import { siteData } from '@/data/site';
+
 import Hero from '@/components/sections/Hero';
+import TrustBar from '@/components/sections/TrustBar';
+import ServicesGrid from '@/components/sections/ServicesGrid';
+import HowItWorks from '@/components/sections/HowItWorks';
+import WhyChooseUs from '@/components/sections/WhyChooseUs';
+import StatsCounter from '@/components/sections/StatsCounter';
+import AboutTeaser from '@/components/sections/AboutTeaser';
+import TestimonialsCarousel from '@/components/sections/TestimonialsCarousel';
+import QuizCTA from '@/components/sections/QuizCTA';
+import BlogPreview from '@/components/sections/BlogPreview';
+import BookingTeaser from '@/components/sections/BookingTeaser';
+import FinalCTABanner from '@/components/sections/FinalCTABanner';
 
 export const metadata: Metadata = {
   title: siteData.seo.defaultTitle,
@@ -10,23 +22,30 @@ export const metadata: Metadata = {
 export default function HomePage() {
   return (
     <main className="min-h-screen bg-[var(--bg-base)]">
-      {/* ── Section 1: Hero ── */}
+      {/* 1 — bg-base */}
       <Hero />
-
-      {/*
-        Remaining homepage sections — built in Stage 1D:
-        2. TrustBar
-        3. ServicesGrid
-        4. HowItWorks
-        5. WhyChooseUs
-        6. StatsCounter
-        7. ServiceAreasSection
-        8. TestimonialsCarousel (3-4 featured)
-        9. Quiz CTA inline
-        10. Blog preview
-        11. Booking teaser (Calendly inline)
-        12. FinalCTABanner
-      */}
+      {/* 2 — bg-elevated */}
+      <TrustBar />
+      {/* 3 — bg-base */}
+      <ServicesGrid />
+      {/* 4 — bg-elevated */}
+      <HowItWorks />
+      {/* 5 — bg-base */}
+      <WhyChooseUs />
+      {/* 6 — primary accent */}
+      <StatsCounter />
+      {/* 7 — bg-elevated */}
+      <AboutTeaser />
+      {/* 8 — bg-base */}
+      <TestimonialsCarousel />
+      {/* 9 — bg-card border */}
+      <QuizCTA />
+      {/* 10 — bg-elevated */}
+      <BlogPreview />
+      {/* 11 — bg-base */}
+      <BookingTeaser />
+      {/* 12 — primary accent */}
+      <FinalCTABanner />
     </main>
   );
 }
