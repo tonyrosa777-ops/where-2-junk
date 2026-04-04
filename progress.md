@@ -5,7 +5,7 @@
 **Business Type:** Local residential & commercial junk removal service
 **Launch Target:** ASAP — April 2026
 **Last Updated:** 2026-04-04
-**Current Phase:** Phase 3 — Design System + Hero (next up)
+**Current Phase:** Stage 1D — Homepage Sections (next up)
 
 ---
 
@@ -16,7 +16,7 @@
 | 0 | Project Initialization | ✅ Complete |
 | 1 | Research + Design System | ✅ Complete |
 | 2 | Scaffold | ✅ Complete |
-| 3 | Design System + Hero | ⬜ Not Started |
+| 3 | Design System + Hero | ✅ Complete |
 | 4 | Homepage Sections | ⬜ Not Started |
 | 5 | Core Pages | ⬜ Not Started |
 | 6 | Niche-Specific Pages | ⬜ Not Started |
@@ -97,6 +97,34 @@
 **Scaffold deliverables committed:**
 - 50 files, 2 commits, pushed to github.com/tonyrosa777-ops/where-2-junk
 - Next.js 16 + Tailwind 4, TypeScript strict, 0 build errors
+
+### Session 2 — 2026-04-04 (animation-specialist subagent)
+**Completed:**
+- Hero animation selected: SVG Lightning Bolts + CSS speed lines + pulse rings (adapted from codys-complete-junk-removal HeroEffects.tsx, recolored to brand CSS vars)
+- `src/components/sections/HeroEffects.tsx` created — client component, "use client" first token, `prefers-reduced-motion` guard, CSS var-only colors
+- `src/components/sections/Hero.tsx` created — server component, two-column desktop / single-column mobile layout, `.hero-item-*` entrance animations, owner photo placeholder
+- `src/app/globals.css` extended — boltFlicker, particleFloat, ringPulse, glowBreathe, arcDash, scanLine keyframes added
+- `src/app/page.tsx` wired — Hero imported and rendered as Section 1
+
+**Discovered:**
+- Design system Section 8 confirms Explosive/Kinetic axis — SVG lightning is correct over Forge canvas (wrong register: making vs removing things)
+- Build-log error #9 confirmed: "use client" absolute first token (Turbopack)
+- Build-log error #8 confirmed: framer-motion v12 named ease strings only — hero animations use CSS keyframes only (no Framer Motion), avoids this class of error
+- CSS custom properties used as animation params (--dur, --delay, --p-opacity) on individual elements — allows per-element timing without JS
+
+**Stage 1C Complete — 2026-04-04**
+- content-writer: site.ts fully populated, 32 testimonials, 0 [FILL] strings, 0 em dashes in string values
+- animation-specialist: HeroEffects.tsx (SVG lightning + pulse rings), Hero.tsx (2-col desktop layout)
+- Hero H1: "Manchester's Only Junk Hauler With Upfront Prices and Same-Day Pickup"
+- Committed: bc00534 (content), c718b49 (animation), pushed to origin/main
+
+**Confirm with Joshua before launch:**
+- Email: using hello@where2junk.com placeholder
+- Stats: 500+ jobs, 100% satisfaction (LOW CONFIDENCE — no source data)
+- Hours: Mon-Sat 7am-7pm, Sun by appointment (LOW CONFIDENCE — assumed)
+- Photography: fal.ai placeholders throughout until real photos received
+
+**Next Session Starts At:** Stage 1D — Homepage Sections (TrustBar, ServicesGrid, HowItWorks, WhyChooseUs, StatsCounter, ServiceAreasSection, TestimonialsCarousel, Quiz CTA, Blog preview, Booking teaser, FinalCTABanner)
 - 27 routes build clean (static + SSG + dynamic)
 - Design tokens: red/black/white motorsport palette, Barlow Condensed + Barlow + JetBrains Mono
 - 8 animation wrappers (FadeIn, FadeUp, SlideIn, ScaleIn, StaggerContainer, CountUp, ParallaxWrapper, RevealText)
