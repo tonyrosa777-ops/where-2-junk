@@ -11,10 +11,14 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
   const [areasOpen, setAreasOpen] = useState(false);
+  const [moreOpen, setMoreOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const areasDropdownRef = useRef<HTMLDivElement>(null);
+  const moreDropdownRef = useRef<HTMLDivElement>(null);
   const { count, openCart } = useCart();
+
+  const MORE_LABELS = new Set(['Gallery', 'FAQ', 'Pricing', 'Shop']);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -29,6 +33,9 @@ export default function Header() {
       }
       if (areasDropdownRef.current && !areasDropdownRef.current.contains(e.target as Node)) {
         setAreasOpen(false);
+      }
+      if (moreDropdownRef.current && !moreDropdownRef.current.contains(e.target as Node)) {
+        setMoreOpen(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
@@ -76,7 +83,7 @@ export default function Header() {
 
             {/* Desktop Nav */}
             <nav className="hidden lg:flex items-center gap-1">
-              {siteData.nav.links.map((link) => {
+              {siteData.nav.links.filter(l => !MORE_LABELS.has(l.label)).map((link) => {
                 if (link.label === 'Services') {
                   return (
                     <div key={link.href} ref={dropdownRef} className="relative"
@@ -265,6 +272,63 @@ export default function Header() {
                   </Link>
                 );
               })}
+
+              {/* More dropdown */}
+              <div ref={moreDropdownRef} className="relative">
+                <button
+                  onClick={() => setMoreOpen(!moreOpen)}
+                  className="flex items-center gap-1 px-3 py-2 transition-colors font-display font-black uppercase text-sm tracking-widest"
+                  style={{ color: moreOpen ? 'var(--text-primary)' : 'var(--text-secondary)' }}
+                  onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--text-primary)')}
+                  onMouseLeave={(e) => { if (!moreOpen) e.currentTarget.style.color = 'var(--text-secondary)'; }}
+                  aria-label="More navigation links"
+                >
+                  <Menu size={16} />
+                  <ChevronDown size={13} className={`transition-transform duration-200 ${moreOpen ? 'rotate-180' : ''}`} />
+                </button>
+
+                <AnimatePresence>
+                  {moreOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 8, scale: 0.97 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: 8, scale: 0.97 }}
+                      transition={{ duration: 0.15 }}
+                      className="absolute top-full right-0 mt-2 w-48 z-50 border"
+                      style={{ background: 'var(--bg-card)', borderColor: 'var(--primary-muted)' }}
+                    >
+                      <p className="px-4 pt-4 pb-2 font-mono text-xs uppercase tracking-widest"
+                        style={{ color: 'var(--text-muted)' }}>
+                        More
+                      </p>
+                      <div className="pb-2">
+                        {siteData.nav.links.filter(l => MORE_LABELS.has(l.label)).map(link => (
+                          <Link
+                            key={link.href}
+                            href={link.href}
+                            onClick={() => setMoreOpen(false)}
+                            className="flex items-center gap-2 px-4 py-2.5 transition-colors"
+                            style={{ color: 'var(--text-secondary)' }}
+                            onMouseEnter={(e) => {
+                              const el = e.currentTarget as HTMLElement;
+                              el.style.color = 'var(--text-primary)';
+                              el.style.background = 'rgba(215,43,43,0.08)';
+                            }}
+                            onMouseLeave={(e) => {
+                              const el = e.currentTarget as HTMLElement;
+                              el.style.color = 'var(--text-secondary)';
+                              el.style.background = 'transparent';
+                            }}
+                          >
+                            <span className="w-1.5 h-1.5 flex-shrink-0" style={{ background: 'var(--primary)' }} />
+                            <span className="font-body text-sm">{link.label}</span>
+                          </Link>
+                        ))}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
             </nav>
 
             {/* Right Side — Desktop */}
