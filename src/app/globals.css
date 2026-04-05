@@ -1,0 +1,211 @@
+@import "tailwindcss";
+
+/* ── Design tokens ── */
+@theme inline {
+  /* Brand colors */
+  --color-primary: #D72B2B;
+  --color-primary-muted: rgba(215, 43, 43, 0.55);
+  --color-accent: #FF4444;
+
+  /* Background scale */
+  --color-bg-base: #0F0F0F;
+  --color-bg-elevated: #1A1A1A;
+  --color-bg-card: #242424;
+
+  /* Text scale */
+  --color-text-primary: #F5F5F5;
+  --color-text-secondary: rgba(245, 245, 245, 0.72);
+  --color-text-muted: rgba(245, 245, 245, 0.42);
+
+  /* Fonts — resolved from next/font CSS vars set in layout.tsx */
+  --font-display: var(--font-barlow-condensed), Impact, sans-serif;
+  --font-body: var(--font-barlow), 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), 'Courier New', monospace;
+}
+
+/* ── Raw CSS vars for var(--primary) usage in components ── */
+:root {
+  --primary: #D72B2B;
+  --primary-muted: rgba(215, 43, 43, 0.55);
+  --accent: #FF4444;
+
+  --bg-base: #0F0F0F;
+  --bg-elevated: #1A1A1A;
+  --bg-card: #242424;
+
+  --text-primary: #F5F5F5;
+  --text-secondary: rgba(245, 245, 245, 0.72);
+  --text-muted: rgba(245, 245, 245, 0.42);
+
+  --container-max: 1200px;
+  --container-wide: 1440px;
+  --container-narrow: 760px;
+}
+
+/* ── Base ── */
+html {
+  scroll-behavior: smooth;
+  background: var(--bg-base);
+  color: var(--text-primary);
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg-base);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background: var(--primary);
+  color: #fff;
+}
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--bg-elevated); }
+::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 3px; }
+
+/* ── Hero entrance animations ── */
+@keyframes heroFadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes heroFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes heroBounce {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(8px); }
+}
+
+.hero-item-1 { animation: heroFadeUp 0.4s ease both 0.1s; }
+.hero-item-2 { animation: heroFadeUp 0.4s ease both 0.25s; }
+.hero-item-3 { animation: heroFadeUp 0.4s ease both 0.4s; }
+.hero-item-4 { animation: heroFadeUp 0.4s ease both 0.55s; }
+.hero-item-5 { animation: heroFadeIn 0.4s ease both 0.8s; }
+.hero-chevron { animation: heroBounce 2s ease-in-out infinite 1.2s; }
+.hero-gallery-link { color: var(--text-muted); transition: color 0.15s ease; }
+.hero-gallery-link:hover { color: var(--primary); }
+
+/* ── Speed-line accent (motorsport brand) ── */
+@keyframes speedLineSweep {
+  0%   { transform: translateX(-100%) skewX(-15deg); opacity: 0; }
+  30%  { opacity: 0.6; }
+  100% { transform: translateX(400%) skewX(-15deg); opacity: 0; }
+}
+.speed-line {
+  animation: speedLineSweep 3s ease-in-out infinite;
+}
+.speed-line-delay-1 { animation-delay: 0.4s; }
+.speed-line-delay-2 { animation-delay: 0.8s; }
+.speed-line-delay-3 { animation-delay: 1.2s; }
+
+/* ── Hero SVG lightning bolt animation ── */
+@keyframes boltFlicker {
+  0%, 100% { opacity: 0; }
+  5%        { opacity: 0.9; }
+  10%       { opacity: 0.4; }
+  15%       { opacity: 1; }
+  25%       { opacity: 0; }
+}
+.hero-bolt {
+  opacity: 0;
+  animation: boltFlicker var(--dur, 4s) ease-in-out infinite var(--delay, 0s);
+}
+
+/* ── Hero floating particle ── */
+@keyframes particleFloat {
+  0%        { opacity: 0; transform: translateY(0) scale(1); }
+  20%       { opacity: var(--p-opacity, 0.5); }
+  80%       { opacity: var(--p-opacity, 0.5); }
+  100%      { opacity: 0; transform: translateY(-18px) scale(0.6); }
+}
+.hero-particle {
+  animation: particleFloat var(--dur, 4s) ease-in-out infinite var(--delay, 0s);
+}
+
+/* ── Hero pulse ring ── */
+@keyframes ringPulse {
+  0%   { transform: translate(-50%, -50%) scale(0); opacity: 0.5; }
+  100% { transform: translate(-50%, -50%) scale(220); opacity: 0; }
+}
+.hero-ring {
+  animation: ringPulse var(--dur, 4s) ease-out infinite var(--delay, 0s);
+}
+
+/* ── Hero breathing central glow ── */
+@keyframes glowBreathe {
+  0%, 100% { opacity: 0.12; }
+  50%       { opacity: 0.22; }
+}
+.hero-glow-breathe {
+  animation: glowBreathe 5s ease-in-out infinite;
+}
+
+/* ── Hero arc dash ── */
+@keyframes arcDash {
+  0%   { stroke-dashoffset: 80; opacity: 0.4; }
+  50%  { opacity: 0.7; }
+  100% { stroke-dashoffset: -80; opacity: 0; }
+}
+.hero-arc-dash  { animation: arcDash 6s linear infinite; }
+.hero-arc-dash-2 { animation: arcDash 8s linear infinite 2s; }
+
+/* ── Hero scan line ── */
+@keyframes scanLine {
+  0%   { top: 0%; opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}
+.hero-scanline {
+  position: absolute;
+  left: 0; right: 0;
+  height: 1px;
+  animation: scanLine 7s linear infinite;
+}
+
+/* ── Reduced motion: disable all animations ── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ── Blog article prose ── */
+.article-prose {
+  color: var(--text-secondary);
+  max-width: 72ch;
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  line-height: 1.75;
+}
+.article-prose h2 {
+  font-family: var(--font-display);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+  color: var(--text-primary);
+  margin-top: 2em;
+  margin-bottom: 0.5em;
+}
+.article-prose p {
+  margin-bottom: 1.25em;
+}
+.article-prose ul {
+  padding-left: 1.5em;
+  margin-bottom: 1.25em;
+  list-style: disc;
+}
+.article-prose li {
+  margin-bottom: 0.5em;
+}
+.article-prose strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
