@@ -173,6 +173,10 @@ export default function QuizPage() {
       return;
     }
     setPhoneError('');
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setSubmitError('Please enter a valid email address.');
+      return;
+    }
     setSubmitError('');
     setSubmitting(true);
 
@@ -420,22 +424,20 @@ export default function QuizPage() {
                 )}
               </div>
 
-              {/* Email (optional) */}
+              {/* Email */}
               <div>
                 <label
                   htmlFor="quiz-email"
                   className="font-mono"
                   style={{ display: 'block', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--text-muted)', marginBottom: '6px' }}
                 >
-                  Email{' '}
-                  <span style={{ fontWeight: 400, textTransform: 'none', letterSpacing: 0 }}>
-                    (optional)
-                  </span>
+                  Email
                 </label>
                 <input
                   id="quiz-email"
                   type="email"
                   autoComplete="email"
+                  required
                   placeholder={q.leadCapture.emailPlaceholder}
                   value={email}
                   onChange={e => setEmail(e.target.value)}
