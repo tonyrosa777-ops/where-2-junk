@@ -5,7 +5,6 @@
 // All copy sourced from siteData.hero — zero hard-coded strings.
 
 import HeroEffects from './HeroEffects';
-import HeroAnimation from './HeroAnimation';
 import Button from '@/components/ui/Button';
 import Badge from '@/components/ui/Badge';
 import { siteData } from '@/data/site';
@@ -48,13 +47,10 @@ export default function Hero() {
                   fontSize: 'clamp(3.5rem, 8vw, 7rem)',
                   letterSpacing: '-0.02em',
                   color: 'var(--text-primary)',
+                  whiteSpace: 'pre-line',
                 }}
               >
-                {hero.headline.split('\n')[0]}
-                <br />
-                <span className="hero-haul-shimmer">
-                  {hero.headline.split('\n')[1]}
-                </span>
+                {hero.headline}
               </h1>
 
               {/* Subheadline */}
@@ -100,11 +96,54 @@ export default function Hero() {
               >
                 {hero.trustCopy}
               </p>
+
+              {/* Gallery teaser */}
+              <a
+                href="/gallery"
+                className="hero-gallery-link font-mono text-xs self-start"
+              >
+                See our work →
+              </a>
             </div>
 
-            {/* ── Right column: custom JS animation ── */}
-            <div className="hidden lg:flex items-center justify-end">
-              <HeroAnimation />
+            {/* ── Right column: owner photo — hidden on mobile ── */}
+            <div className="hidden lg:flex items-center justify-center">
+              <div
+                className="w-full max-w-[400px] aspect-[4/5] flex items-center justify-center"
+                style={{
+                  background: 'var(--bg-card)',
+                  border: '2px solid var(--primary-muted)',
+                }}
+              >
+                {/*
+                  Owner photo placeholder.
+                  Replace with <Image> when Joshua Ortega provides headshot.
+                  fal.ai prompt is in design-system.md Section 6 (About section prompt).
+                */}
+                <div className="text-center px-6">
+                  <div
+                    className="w-16 h-16 mx-auto mb-4 flex items-center justify-center"
+                    style={{ border: '2px solid var(--primary-muted)', color: 'var(--primary)' }}
+                  >
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+                      <circle cx="12" cy="8" r="4" />
+                      <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
+                    </svg>
+                  </div>
+                  <p
+                    className="font-mono text-xs uppercase tracking-widest"
+                    style={{ color: 'var(--text-muted)' }}
+                  >
+                    Joshua Ortega
+                  </p>
+                  <p
+                    className="font-mono text-xs mt-1"
+                    style={{ color: 'var(--text-muted)', opacity: 0.6 }}
+                  >
+                    Photo coming soon
+                  </p>
+                </div>
+              </div>
             </div>
 
           </div>

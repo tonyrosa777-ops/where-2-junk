@@ -80,6 +80,16 @@ const BLOG_IMAGES = [
     prompt:
       'Large pile of furniture and household items stacked in a residential driveway during an estate cleanout, ranch house in background, New Hampshire, photorealistic DSLR photo',
   },
+  {
+    slug: 'donate-recycle-what-happens-your-junk',
+    prompt:
+      'Junk removal truck with back door open, worker sorting usable furniture from general debris — some items set aside for donation, some for recycling — bright day, New Hampshire residential street, photorealistic DSLR photo',
+  },
+  {
+    slug: 'junk-removal-before-selling-home-manchester-nh',
+    prompt:
+      'Clean open garage and tidy basement side by side in a New Hampshire colonial home staged for real estate listing, bright natural light, empty shelves, freshly swept floors, photorealistic DSLR photo',
+  },
 ];
 
 // ── Gallery job photos ────────────────────────────────────────────────────

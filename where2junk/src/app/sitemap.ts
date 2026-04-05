@@ -14,6 +14,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/services',
     '/blog',
     '/testimonials',
+    '/gallery',
   ].map((path) => ({
     url: `${BASE}${path}`,
     lastModified: new Date(),

@@ -34,6 +34,9 @@ export default function ContactClient() {
     email: '',
     message: '',
   });
+  const [serviceType, setServiceType] = useState('');
+  const [timeline, setTimeline] = useState('');
+  const [volume, setVolume] = useState('');
   const [submitState, setSubmitState] = useState<SubmitState>('idle');
 
   const { contact } = siteData;
@@ -57,6 +60,9 @@ export default function ContactClient() {
           phone: form.phone,
           email: form.email || undefined,
           message: form.message,
+          serviceType: serviceType || undefined,
+          timeline: timeline || undefined,
+          volume: volume || undefined,
         }),
       });
 
@@ -207,7 +213,7 @@ export default function ContactClient() {
                   </div>
 
                   {/* Message */}
-                  <div className="mb-7">
+                  <div className="mb-5">
                     <label
                       htmlFor="message"
                       className="block font-mono text-xs uppercase tracking-widest mb-1"
@@ -226,6 +232,83 @@ export default function ContactClient() {
                       className={inputBase}
                       style={{ ...inputStyle, resize: 'vertical' }}
                     />
+                  </div>
+
+                  {/* Service Type */}
+                  <div className="mb-5 flex flex-col gap-2">
+                    <label className="font-mono text-xs uppercase tracking-widest" style={{ color: 'var(--text-muted)' }}>
+                      Service Type <span style={{ color: 'var(--text-muted)' }}>(optional)</span>
+                    </label>
+                    <select
+                      value={serviceType}
+                      onChange={(e) => setServiceType(e.target.value)}
+                      className="w-full px-4 py-3 font-body text-base bg-transparent border outline-none transition-colors"
+                      style={{
+                        borderColor: 'rgba(245,245,245,0.15)',
+                        color: serviceType ? 'var(--text-primary)' : 'var(--text-muted)',
+                      }}
+                      onFocus={(e) => (e.currentTarget.style.borderColor = 'var(--primary)')}
+                      onBlur={(e) => (e.currentTarget.style.borderColor = 'rgba(245,245,245,0.15)')}
+                    >
+                      <option value="">What do you need removed?</option>
+                      <option value="junk-removal">Junk Removal</option>
+                      <option value="garage-cleanout">Garage or Basement Cleanout</option>
+                      <option value="yard-waste">Yard Waste Removal</option>
+                      <option value="construction-debris">Construction Debris</option>
+                      <option value="full-house">Full House Cleanout</option>
+                      <option value="estate">Estate Cleanout</option>
+                      <option value="not-sure">Not Sure Yet</option>
+                    </select>
+                  </div>
+
+                  {/* Timeline */}
+                  <div className="mb-5 flex flex-col gap-2">
+                    <label className="font-mono text-xs uppercase tracking-widest" style={{ color: 'var(--text-muted)' }}>
+                      Timeline <span style={{ color: 'var(--text-muted)' }}>(optional)</span>
+                    </label>
+                    <div className="flex flex-wrap gap-2">
+                      {['Today/Tomorrow', 'This Week', 'This Month', 'Just Exploring'].map((opt) => (
+                        <button
+                          key={opt}
+                          type="button"
+                          onClick={() => setTimeline(opt)}
+                          className="px-4 py-2 font-body text-sm transition-all duration-150"
+                          style={{
+                            border: '1px solid',
+                            borderColor: timeline === opt ? 'var(--primary)' : 'rgba(245,245,245,0.15)',
+                            background: timeline === opt ? 'rgba(215,43,43,0.12)' : 'transparent',
+                            color: timeline === opt ? 'var(--text-primary)' : 'var(--text-muted)',
+                          }}
+                        >
+                          {opt}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Volume */}
+                  <div className="mb-7 flex flex-col gap-2">
+                    <label className="font-mono text-xs uppercase tracking-widest" style={{ color: 'var(--text-muted)' }}>
+                      Volume <span style={{ color: 'var(--text-muted)' }}>(optional)</span>
+                    </label>
+                    <div className="flex flex-wrap gap-2">
+                      {['A few items', 'About a truckload', 'Multiple loads', 'Not sure'].map((opt) => (
+                        <button
+                          key={opt}
+                          type="button"
+                          onClick={() => setVolume(opt)}
+                          className="px-4 py-2 font-body text-sm transition-all duration-150"
+                          style={{
+                            border: '1px solid',
+                            borderColor: volume === opt ? 'var(--primary)' : 'rgba(245,245,245,0.15)',
+                            background: volume === opt ? 'rgba(215,43,43,0.12)' : 'transparent',
+                            color: volume === opt ? 'var(--text-primary)' : 'var(--text-muted)',
+                          }}
+                        >
+                          {opt}
+                        </button>
+                      ))}
+                    </div>
                   </div>
 
                   <button

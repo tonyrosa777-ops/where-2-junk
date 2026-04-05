@@ -1,13 +1,12 @@
-import { CalendarDays, Truck, MousePointerClick, CheckCircle, type LucideIcon } from 'lucide-react';
 import ScaleIn from '@/components/animations/ScaleIn';
+import EmojiIcon from '@/components/ui/EmojiIcon';
 import { siteData } from '@/data/site';
 
-// Map the icon string values from siteData to Lucide components
-const iconMap: Record<string, LucideIcon> = {
-  calendar: CalendarDays,
-  truck: Truck,
-  'hand-pointing': MousePointerClick,
-  'check-circle': CheckCircle,
+const HOW_IT_WORKS_ICONS: Record<string, string> = {
+  calendar: '📅',
+  truck: '🚛',
+  'hand-pointing': '👉',
+  'check-circle': '✅',
 };
 
 export default function HowItWorks() {
@@ -41,7 +40,7 @@ export default function HowItWorks() {
         {/* Step cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {steps.map((step, i) => {
-            const Icon = iconMap[step.icon] ?? CheckCircle;
+            const emoji = HOW_IT_WORKS_ICONS[step.icon] ?? '✅';
 
             return (
               <ScaleIn key={step.step} delay={i * 0.1}>
@@ -59,16 +58,7 @@ export default function HowItWorks() {
                   </span>
 
                   {/* Icon */}
-                  <div
-                    className="mb-4 w-10 h-10 flex items-center justify-center rounded-md flex-shrink-0"
-                    style={{ background: 'rgba(215, 43, 43, 0.12)' }}
-                  >
-                    <Icon
-                      size={20}
-                      aria-hidden="true"
-                      style={{ color: 'var(--primary)' }}
-                    />
-                  </div>
+                  <EmojiIcon emoji={emoji} size="sm" className="mb-4" />
 
                   {/* Title */}
                   <h3

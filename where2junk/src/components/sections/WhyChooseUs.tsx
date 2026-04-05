@@ -1,14 +1,14 @@
 'use client';
 
-import { Zap, DollarSign, ShieldCheck, Leaf } from 'lucide-react';
 import FadeUp from '@/components/animations/FadeUp';
+import EmojiIcon from '@/components/ui/EmojiIcon';
 import { siteData } from '@/data/site';
 
-const iconMap: Record<string, React.ElementType> = {
-  zap: Zap,
-  'dollar-sign': DollarSign,
-  'shield-check': ShieldCheck,
-  leaf: Leaf,
+const WHY_US_ICONS: Record<string, string> = {
+  zap: '⚡',
+  'dollar-sign': '💵',
+  'shield-check': '🛡️',
+  leaf: '♻️',
 };
 
 export default function WhyChooseUs() {
@@ -45,7 +45,7 @@ export default function WhyChooseUs() {
         {/* Cards grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
           {items.map((item, i) => {
-            const Icon = iconMap[item.icon] ?? Zap;
+            const emoji = WHY_US_ICONS[item.icon] ?? '⚡';
 
             return (
               <FadeUp key={item.title} delay={i * 0.1}>
@@ -56,16 +56,8 @@ export default function WhyChooseUs() {
                     border: '1px solid rgba(245,245,245,0.08)',
                   }}
                 >
-                  {/* Icon wrapper */}
-                  <div
-                    className="flex items-center justify-center w-12 h-12 mb-5 shrink-0"
-                    style={{
-                      border: '1px solid var(--primary)',
-                      color: 'var(--primary)',
-                    }}
-                  >
-                    <Icon size={22} aria-hidden="true" />
-                  </div>
+                  {/* Icon */}
+                  <EmojiIcon emoji={emoji} size="md" className="mb-5" />
 
                   {/* Title */}
                   <h3

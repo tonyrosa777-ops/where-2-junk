@@ -5,13 +5,14 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Phone, ChevronDown, Menu } from 'lucide-react';
 import { siteData } from '@/data/site';
 import MobileNav from './MobileNav';
-import Where2Logo from './Where2Logo';
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
+  const [areasOpen, setAreasOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const areasDropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -23,6 +24,9 @@ export default function Header() {
     const handleClickOutside = (e: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
         setServicesOpen(false);
+      }
+      if (areasDropdownRef.current && !areasDropdownRef.current.contains(e.target as Node)) {
+        setAreasOpen(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
@@ -47,8 +51,25 @@ export default function Header() {
           <div className="flex items-center justify-between">
 
             {/* Logo */}
-            <Link href="/" className="flex items-center select-none" aria-label="Where2 Junk Removal — Home">
-              <Where2Logo />
+            <Link href="/" className="flex items-baseline gap-0 select-none">
+              <span
+                className="font-display font-black uppercase text-xl tracking-tight leading-none"
+                style={{ color: 'var(--text-primary)' }}
+              >
+                WHERE
+              </span>
+              <span
+                className="font-display font-black uppercase text-xl tracking-tight leading-none"
+                style={{ color: 'var(--primary)' }}
+              >
+                2
+              </span>
+              <span
+                className="font-display font-black uppercase text-xl tracking-tight leading-none ml-1"
+                style={{ color: 'var(--text-primary)' }}
+              >
+                JUNK
+              </span>
             </Link>
 
             {/* Desktop Nav */}
@@ -137,6 +158,78 @@ export default function Header() {
                               >
                                 View All Services →
                               </Link>
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  );
+                }
+
+                if (link.label === 'Service Areas') {
+                  return (
+                    <div key={link.href} ref={areasDropdownRef} className="relative">
+                      <button
+                        onClick={() => setAreasOpen(!areasOpen)}
+                        className="flex items-center gap-1 px-3 py-2 transition-colors font-display font-black uppercase text-sm tracking-widest"
+                        style={{ color: areasOpen ? 'var(--text-primary)' : 'var(--text-secondary)' }}
+                        onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--text-primary)')}
+                        onMouseLeave={(e) => {
+                          if (!areasOpen) e.currentTarget.style.color = 'var(--text-secondary)';
+                        }}
+                      >
+                        {link.label}
+                        <ChevronDown
+                          size={13}
+                          className={`transition-transform duration-200 ${areasOpen ? 'rotate-180' : ''}`}
+                        />
+                      </button>
+
+                      <AnimatePresence>
+                        {areasOpen && (
+                          <motion.div
+                            initial={{ opacity: 0, y: 8, scale: 0.97 }}
+                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                            exit={{ opacity: 0, y: 8, scale: 0.97 }}
+                            transition={{ duration: 0.15 }}
+                            className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-64 z-50 border"
+                            style={{
+                              background: 'var(--bg-card)',
+                              borderColor: 'var(--primary-muted)',
+                            }}
+                          >
+                            <p
+                              className="px-4 pt-4 pb-2 font-mono text-xs uppercase tracking-widest"
+                              style={{ color: 'var(--text-muted)' }}
+                            >
+                              Areas We Serve
+                            </p>
+                            <div className="pb-2">
+                              {siteData.serviceAreas.map((area) => (
+                                <Link
+                                  key={area.slug}
+                                  href={`/areas/${area.slug}`}
+                                  onClick={() => setAreasOpen(false)}
+                                  className="flex items-center gap-2 px-4 py-2.5 transition-colors"
+                                  style={{ color: 'var(--text-secondary)' }}
+                                  onMouseEnter={(e) => {
+                                    const el = e.currentTarget as HTMLElement;
+                                    el.style.color = 'var(--text-primary)';
+                                    el.style.background = 'rgba(215,43,43,0.08)';
+                                  }}
+                                  onMouseLeave={(e) => {
+                                    const el = e.currentTarget as HTMLElement;
+                                    el.style.color = 'var(--text-secondary)';
+                                    el.style.background = 'transparent';
+                                  }}
+                                >
+                                  <span
+                                    className="w-1.5 h-1.5 flex-shrink-0"
+                                    style={{ background: 'var(--primary)' }}
+                                  />
+                                  <span className="font-body text-sm">{area.city}, NH</span>
+                                </Link>
+                              ))}
                             </div>
                           </motion.div>
                         )}

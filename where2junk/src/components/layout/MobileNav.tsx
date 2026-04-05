@@ -1,9 +1,9 @@
 'use client';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
-import { X, Phone } from 'lucide-react';
+import { X, Phone, ChevronDown } from 'lucide-react';
 import { siteData } from '@/data/site';
-import Where2Logo from './Where2Logo';
 
 interface Props {
   isOpen: boolean;
@@ -11,6 +11,8 @@ interface Props {
 }
 
 export default function MobileNav({ isOpen, onClose }: Props) {
+  const [areasExpanded, setAreasExpanded] = useState(false);
+
   return (
     <AnimatePresence>
       {isOpen && (
@@ -39,8 +41,29 @@ export default function MobileNav({ isOpen, onClose }: Props) {
               className="flex items-center justify-between p-5 border-b flex-shrink-0"
               style={{ borderColor: 'rgba(245,245,245,0.08)' }}
             >
-              <Link href="/" onClick={onClose} className="flex items-center select-none" aria-label="Where2 Junk Removal — Home">
-                <Where2Logo />
+              <Link
+                href="/"
+                onClick={onClose}
+                className="flex items-baseline gap-0 select-none"
+              >
+                <span
+                  className="font-display font-black uppercase text-lg tracking-tight leading-none"
+                  style={{ color: 'var(--text-primary)' }}
+                >
+                  WHERE
+                </span>
+                <span
+                  className="font-display font-black uppercase text-lg tracking-tight leading-none"
+                  style={{ color: 'var(--primary)' }}
+                >
+                  2
+                </span>
+                <span
+                  className="font-display font-black uppercase text-lg tracking-tight leading-none ml-1"
+                  style={{ color: 'var(--text-primary)' }}
+                >
+                  JUNK
+                </span>
               </Link>
               <button
                 onClick={onClose}
@@ -86,31 +109,104 @@ export default function MobileNav({ isOpen, onClose }: Props) {
 
             {/* Primary Nav Links */}
             <nav className="p-4 flex-1">
-              {siteData.nav.links.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  onClick={onClose}
-                  className="flex items-center gap-3 px-4 py-3 mb-1 transition-colors font-display font-black uppercase tracking-widest text-sm"
-                  style={{ color: 'var(--text-secondary)' }}
-                  onMouseEnter={(e) => {
-                    const el = e.currentTarget as HTMLElement;
-                    el.style.color = 'var(--text-primary)';
-                    el.style.background = 'rgba(215,43,43,0.08)';
-                  }}
-                  onMouseLeave={(e) => {
-                    const el = e.currentTarget as HTMLElement;
-                    el.style.color = 'var(--text-secondary)';
-                    el.style.background = 'transparent';
-                  }}
-                >
-                  <span
-                    className="w-1 h-4 flex-shrink-0"
-                    style={{ background: 'var(--primary)' }}
-                  />
-                  {link.label}
-                </Link>
-              ))}
+              {siteData.nav.links.map((link) => {
+                if (link.label === 'Service Areas') {
+                  return (
+                    <div key={link.href}>
+                      <button
+                        onClick={() => setAreasExpanded(!areasExpanded)}
+                        className="flex items-center gap-3 w-full px-4 py-3 mb-1 transition-colors font-display font-black uppercase tracking-widest text-sm"
+                        style={{ color: areasExpanded ? 'var(--text-primary)' : 'var(--text-secondary)' }}
+                        onMouseEnter={(e) => {
+                          const el = e.currentTarget as HTMLElement;
+                          el.style.color = 'var(--text-primary)';
+                          el.style.background = 'rgba(215,43,43,0.08)';
+                        }}
+                        onMouseLeave={(e) => {
+                          const el = e.currentTarget as HTMLElement;
+                          el.style.color = areasExpanded ? 'var(--text-primary)' : 'var(--text-secondary)';
+                          el.style.background = 'transparent';
+                        }}
+                      >
+                        <span
+                          className="w-1 h-4 flex-shrink-0"
+                          style={{ background: 'var(--primary)' }}
+                        />
+                        <span className="flex-1 text-left">{link.label}</span>
+                        <ChevronDown
+                          size={13}
+                          className={`transition-transform duration-200 ${areasExpanded ? 'rotate-180' : ''}`}
+                        />
+                      </button>
+                      <AnimatePresence>
+                        {areasExpanded && (
+                          <motion.div
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: 'auto' }}
+                            exit={{ opacity: 0, height: 0 }}
+                            transition={{ duration: 0.2 }}
+                            className="overflow-hidden"
+                          >
+                            <div className="grid grid-cols-2 gap-1 px-4 pb-2">
+                              {siteData.serviceAreas.map((area) => (
+                                <Link
+                                  key={area.slug}
+                                  href={`/areas/${area.slug}`}
+                                  onClick={onClose}
+                                  className="flex items-center gap-2 px-3 py-2 transition-colors font-body text-sm"
+                                  style={{ color: 'var(--text-muted)' }}
+                                  onMouseEnter={(e) => {
+                                    const el = e.currentTarget as HTMLElement;
+                                    el.style.color = 'var(--primary)';
+                                    el.style.background = 'rgba(215,43,43,0.08)';
+                                  }}
+                                  onMouseLeave={(e) => {
+                                    const el = e.currentTarget as HTMLElement;
+                                    el.style.color = 'var(--text-muted)';
+                                    el.style.background = 'transparent';
+                                  }}
+                                >
+                                  <span
+                                    className="w-1.5 h-1.5 flex-shrink-0"
+                                    style={{ background: 'var(--primary-muted)' }}
+                                  />
+                                  {area.city}
+                                </Link>
+                              ))}
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  );
+                }
+
+                return (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    onClick={onClose}
+                    className="flex items-center gap-3 px-4 py-3 mb-1 transition-colors font-display font-black uppercase tracking-widest text-sm"
+                    style={{ color: 'var(--text-secondary)' }}
+                    onMouseEnter={(e) => {
+                      const el = e.currentTarget as HTMLElement;
+                      el.style.color = 'var(--text-primary)';
+                      el.style.background = 'rgba(215,43,43,0.08)';
+                    }}
+                    onMouseLeave={(e) => {
+                      const el = e.currentTarget as HTMLElement;
+                      el.style.color = 'var(--text-secondary)';
+                      el.style.background = 'transparent';
+                    }}
+                  >
+                    <span
+                      className="w-1 h-4 flex-shrink-0"
+                      style={{ background: 'var(--primary)' }}
+                    />
+                    {link.label}
+                  </Link>
+                );
+              })}
 
               {/* Services Sub-list */}
               <div

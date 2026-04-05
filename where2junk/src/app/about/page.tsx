@@ -101,12 +101,74 @@ export default function AboutPage() {
 
             {/* Right: story text */}
             <SlideIn direction="right" className="flex flex-col justify-center">
-              <p
-                className="font-body text-lg leading-relaxed"
-                style={{ color: 'var(--text-secondary)' }}
-              >
-                {about.story}
-              </p>
+              <div className="flex flex-col gap-6">
+                {/* Eyebrow */}
+                <span
+                  className="font-mono text-xs uppercase tracking-widest"
+                  style={{ color: 'var(--primary)' }}
+                >
+                  Founder &mdash; Manchester, NH
+                </span>
+
+                {/* H2 */}
+                <h2
+                  className="font-display font-black uppercase leading-tight text-3xl md:text-4xl"
+                  style={{ color: 'var(--text-primary)' }}
+                >
+                  {about.headline}
+                </h2>
+
+                {/* P1 */}
+                <p
+                  className="font-body text-lg leading-relaxed"
+                  style={{ color: 'var(--text-secondary)' }}
+                >
+                  {about.storyParagraphs[0]}
+                </p>
+
+                {/* P2 — the calling */}
+                <p
+                  className="font-body text-lg leading-relaxed"
+                  style={{ color: 'var(--text-secondary)' }}
+                >
+                  {about.storyParagraphs[1]}
+                </p>
+
+                {/* IS:6:8 Pull Quote */}
+                <blockquote
+                  className="border-l-4 pl-6 my-2"
+                  style={{ borderColor: 'var(--primary)' }}
+                >
+                  <p
+                    className="font-display italic leading-snug text-2xl md:text-3xl"
+                    style={{ color: 'var(--primary)' }}
+                  >
+                    &ldquo;{about.faithStatement}&rdquo;
+                  </p>
+                  <footer
+                    className="font-mono text-sm mt-2"
+                    style={{ color: 'var(--text-muted)' }}
+                  >
+                    &mdash; {about.faithVerse} &nbsp;&middot;&nbsp; {about.faithContext}
+                  </footer>
+                </blockquote>
+
+                {/* P3 */}
+                <p
+                  className="font-body text-lg leading-relaxed"
+                  style={{ color: 'var(--text-secondary)' }}
+                >
+                  {about.storyParagraphs[2]}
+                </p>
+
+                {/* P4 */}
+                <p
+                  className="font-body text-lg leading-relaxed"
+                  style={{ color: 'var(--text-secondary)' }}
+                >
+                  {about.storyParagraphs[3]}
+                </p>
+              </div>
             </SlideIn>
 
           </div>
@@ -137,20 +199,21 @@ export default function AboutPage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {about.values.map((value, index) => (
-              <ScaleIn key={value} delay={index * 0.1}>
+              <ScaleIn key={value.text} delay={index * 0.1}>
                 <div
-                  className="flex items-center justify-center p-8 text-center"
+                  className="flex flex-col items-center justify-center gap-3 p-8 text-center"
                   style={{
                     background: 'var(--bg-card)',
                     border: '1px solid var(--primary-muted)',
-                    minHeight: '8rem',
+                    minHeight: '10rem',
                   }}
                 >
+                  <span style={{ fontSize: '2rem', lineHeight: 1 }}>{value.emoji}</span>
                   <p
                     className="font-display font-black uppercase text-lg leading-tight"
                     style={{ color: 'var(--text-primary)' }}
                   >
-                    {value}
+                    {value.text}
                   </p>
                 </div>
               </ScaleIn>
@@ -205,6 +268,30 @@ export default function AboutPage() {
               </ScaleIn>
             ))}
           </div>
+
+          {/* See All Our Work CTA */}
+          <FadeUp delay={0.3} className="text-center mt-10">
+            <a
+              href="/gallery"
+              className="inline-flex items-center gap-2 font-display font-black uppercase text-sm tracking-widest px-8 py-4 transition-all duration-150"
+              style={{
+                border: '2px solid var(--primary)',
+                color: 'var(--primary)',
+              }}
+              onMouseEnter={(e) => {
+                const el = e.currentTarget as HTMLElement;
+                el.style.background = 'var(--primary)';
+                el.style.color = 'var(--text-primary)';
+              }}
+              onMouseLeave={(e) => {
+                const el = e.currentTarget as HTMLElement;
+                el.style.background = 'transparent';
+                el.style.color = 'var(--primary)';
+              }}
+            >
+              See All Our Work &rarr;
+            </a>
+          </FadeUp>
         </div>
       </section>
 

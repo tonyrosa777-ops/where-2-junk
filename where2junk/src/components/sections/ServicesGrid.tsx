@@ -1,17 +1,18 @@
 'use client';
 
-import { Trash2, Home, TreePine, HardHat, ArrowRight } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import StaggerContainer, { staggerItem } from '@/components/animations/StaggerContainer';
 import Button from '@/components/ui/Button';
+import EmojiIcon from '@/components/ui/EmojiIcon';
 import { siteData } from '@/data/site';
 
-const iconMap: Record<string, React.ElementType> = {
-  'trash-2': Trash2,
-  home: Home,
-  'tree-pine': TreePine,
-  'hard-hat': HardHat,
+const SERVICE_ICONS: Record<string, string> = {
+  'trash-2': '🗑️',
+  home: '🏡',
+  'tree-pine': '🌿',
+  'hard-hat': '⚒️',
 };
 
 export default function ServicesGrid() {
@@ -58,7 +59,7 @@ export default function ServicesGrid() {
           staggerDelay={0.1}
         >
           {services.map((service) => {
-            const Icon = iconMap[service.icon] ?? Trash2;
+            const emoji = SERVICE_ICONS[service.icon] ?? '🗑️';
 
             return (
               <motion.div
@@ -81,15 +82,7 @@ export default function ServicesGrid() {
                 }}
               >
                 {/* Icon */}
-                <div
-                  className="flex items-center justify-center w-12 h-12 mb-5 shrink-0"
-                  style={{
-                    border: '1px solid var(--primary-muted)',
-                    color: 'var(--primary)',
-                  }}
-                >
-                  <Icon size={22} aria-hidden="true" />
-                </div>
+                <EmojiIcon emoji={emoji} size="md" className="mb-5" />
 
                 {/* Title */}
                 <h3

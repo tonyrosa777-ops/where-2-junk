@@ -86,6 +86,8 @@ body {
 .hero-item-4 { animation: heroFadeUp 0.4s ease both 0.55s; }
 .hero-item-5 { animation: heroFadeIn 0.4s ease both 0.8s; }
 .hero-chevron { animation: heroBounce 2s ease-in-out infinite 1.2s; }
+.hero-gallery-link { color: var(--text-muted); transition: color 0.15s ease; }
+.hero-gallery-link:hover { color: var(--primary); }
 
 /* ── Speed-line accent (motorsport brand) ── */
 @keyframes speedLineSweep {
@@ -206,28 +208,4 @@ body {
 .article-prose strong {
   color: var(--text-primary);
   font-weight: 600;
-}
-
-/* ── Hero headline shimmer ("WE HAUL.") ── */
-@keyframes hero-shimmer {
-  0%   { background-position: -300% center; }
-  100% { background-position: 300% center; }
-}
-.hero-haul-shimmer {
-  background: linear-gradient(
-    105deg,
-    #D72B2B 0%,
-    #D72B2B 35%,
-    #ff6060 46%,
-    #ffb0b0 52%,
-    #ff6060 58%,
-    #D72B2B 68%,
-    #D72B2B 100%
-  );
-  background-size: 300% auto;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
-  animation: hero-shimmer 3.5s linear infinite;
 }

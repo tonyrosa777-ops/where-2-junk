@@ -7,6 +7,9 @@ const contactSchema = z.object({
   phone: z.string().min(7),
   email: z.string().email().optional(),
   message: z.string().min(10),
+  serviceType: z.string().optional(),
+  timeline: z.string().optional(),
+  volume: z.string().optional(),
 });
 
 export async function POST(req: NextRequest) {
@@ -30,6 +33,10 @@ export async function POST(req: NextRequest) {
           ``,
           `Message:`,
           data.message,
+          ``,
+          `Service Type: ${data.serviceType || 'not specified'}`,
+          `Timeline: ${data.timeline || 'not specified'}`,
+          `Volume: ${data.volume || 'not specified'}`,
         ]
           .filter((l) => l !== null)
           .join('\n'),
