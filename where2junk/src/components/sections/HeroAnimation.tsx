@@ -534,36 +534,6 @@ export default function HeroAnimation() {
           opacity="0"
         />
 
-        {/* ── Tagline ── */}
-        <text
-          className="w2-tag"
-          x="160" y="336"
-          fontSize="12"
-          fontWeight="700"
-          fontFamily="'Barlow Condensed','Arial Narrow',sans-serif"
-          fill="#D72B2B"
-          textAnchor="middle"
-          letterSpacing="4.2"
-          opacity="0"
-        >
-          YOU POINT, WE HAUL
-        </text>
-
-        {/* ── URL sub-tagline ── */}
-        <text
-          className="w2-tag"
-          x="160" y="352"
-          fontSize="7.5"
-          fontWeight="400"
-          fontFamily="'Barlow Condensed','Arial Narrow',sans-serif"
-          fill="rgba(215,43,43,0.45)"
-          textAnchor="middle"
-          letterSpacing="5.5"
-          opacity="0"
-          style={{ animationDelay: '3.35s' }}
-        >
-          WHERE2JUNK.COM
-        </text>
       </svg>
     </div>
   );

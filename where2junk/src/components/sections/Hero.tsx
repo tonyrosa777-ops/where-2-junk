@@ -48,10 +48,13 @@ export default function Hero() {
                   fontSize: 'clamp(3.5rem, 8vw, 7rem)',
                   letterSpacing: '-0.02em',
                   color: 'var(--text-primary)',
-                  whiteSpace: 'pre-line',
                 }}
               >
-                {hero.headline}
+                {hero.headline.split('\n')[0]}
+                <br />
+                <span className="hero-haul-shimmer">
+                  {hero.headline.split('\n')[1]}
+                </span>
               </h1>
 
               {/* Subheadline */}
