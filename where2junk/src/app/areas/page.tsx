@@ -14,6 +14,12 @@ export default function AreasPage() {
 
   return (
     <main className="min-h-screen" style={{ background: 'var(--bg-base)' }}>
+      <style>{`
+        .area-card:hover {
+          border-color: var(--primary-muted) !important;
+          background: var(--bg-elevated) !important;
+        }
+      `}</style>
 
       {/* ─── Page Hero ─────────────────────────────────────────── */}
       <section className="pt-24 pb-16" style={{ background: 'var(--bg-base)' }}>
@@ -59,20 +65,10 @@ export default function AreasPage() {
                 <Link
                   key={area.slug}
                   href={`/areas/${area.slug}`}
-                  className="group flex flex-col gap-3 p-6 border transition-all duration-200"
+                  className="area-card group flex flex-col gap-3 p-6 border transition-all duration-200"
                   style={{
                     background: 'var(--bg-card)',
                     borderColor: 'rgba(245,245,245,0.08)',
-                  }}
-                  onMouseEnter={(e) => {
-                    const el = e.currentTarget as HTMLElement;
-                    el.style.borderColor = 'var(--primary-muted)';
-                    el.style.background = 'var(--bg-elevated)';
-                  }}
-                  onMouseLeave={(e) => {
-                    const el = e.currentTarget as HTMLElement;
-                    el.style.borderColor = 'rgba(245,245,245,0.08)';
-                    el.style.background = 'var(--bg-card)';
                   }}
                 >
                   <div className="flex items-center gap-2">
