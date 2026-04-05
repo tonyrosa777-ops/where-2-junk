@@ -47,7 +47,7 @@ export const siteData = {
 
   hero: {
     eyebrow: 'MANCHESTER, NH | LICENSED & INSURED',
-    headline: 'Manchester\'s Only Junk Hauler With Upfront Prices and Same-Day Pickup',
+    headline: 'You Point,\nWe Haul.',
     subheadline: 'No phone tag, no surprise bills. Tell us what you have, get a real price, and we\'ll be there fast.',
     tagline: 'You Point, We Haul!',
     ctaPrimary: { label: 'Book Online Now', href: '/booking' },
