@@ -273,21 +273,7 @@ export default function AboutPage() {
           <FadeUp delay={0.3} className="text-center mt-10">
             <a
               href="/gallery"
-              className="inline-flex items-center gap-2 font-display font-black uppercase text-sm tracking-widest px-8 py-4 transition-all duration-150"
-              style={{
-                border: '2px solid var(--primary)',
-                color: 'var(--primary)',
-              }}
-              onMouseEnter={(e) => {
-                const el = e.currentTarget as HTMLElement;
-                el.style.background = 'var(--primary)';
-                el.style.color = 'var(--text-primary)';
-              }}
-              onMouseLeave={(e) => {
-                const el = e.currentTarget as HTMLElement;
-                el.style.background = 'transparent';
-                el.style.color = 'var(--primary)';
-              }}
+              className="about-gallery-cta inline-flex items-center gap-2 font-display font-black uppercase text-sm tracking-widest px-8 py-4 transition-all duration-150"
             >
               See All Our Work &rarr;
             </a>

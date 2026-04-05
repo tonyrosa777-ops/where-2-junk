@@ -88,6 +88,8 @@ body {
 .hero-chevron { animation: heroBounce 2s ease-in-out infinite 1.2s; }
 .hero-gallery-link { color: var(--text-muted); transition: color 0.15s ease; }
 .hero-gallery-link:hover { color: var(--primary); }
+.about-gallery-cta { border: 2px solid var(--primary); color: var(--primary); transition: background 0.15s ease, color 0.15s ease; }
+.about-gallery-cta:hover { background: var(--primary); color: var(--text-primary); }
 
 /* ── Speed-line accent (motorsport brand) ── */
 @keyframes speedLineSweep {
