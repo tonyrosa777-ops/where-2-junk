@@ -218,7 +218,7 @@ export default function HeroAnimation() {
           <style>{`
             /* ── Draw animations ── */
             @keyframes w2-draw {
-              from { stroke-dashoffset: 760; opacity: 1; }
+              from { stroke-dashoffset: 880; opacity: 1; }
               to   { stroke-dashoffset: 0;   opacity: 1; }
             }
             @keyframes w2-whl {
@@ -260,8 +260,8 @@ export default function HeroAnimation() {
 
             /* ── Applied classes ── */
             .w2-body {
-              stroke-dasharray: 760; stroke-dashoffset: 760; opacity: 0;
-              animation: w2-draw 2.2s cubic-bezier(0.4,0,0.2,1) 0.3s forwards;
+              stroke-dasharray: 880; stroke-dashoffset: 880; opacity: 0;
+              animation: w2-draw 2.4s cubic-bezier(0.4,0,0.2,1) 0.3s forwards;
             }
             .w2-whl {
               stroke-dasharray: 228; stroke-dashoffset: 228;
@@ -390,7 +390,7 @@ export default function HeroAnimation() {
 
           Ground:   y = 310
           Cab:      x=22→158  (136px: bumper + hood + cab)
-          Dump box: x=168→298 (top rail y=170 — BELOW cab roof y=108)
+          Dump box: x=168→298 (130px tall rectangular cargo box)
           Wheels:   front cx=80  cy=278 r=32
                     rear  cx=248 cy=278 r=32
         ═══════════════════════════════════════════════════════*/}
@@ -408,8 +408,8 @@ export default function HeroAnimation() {
             L 158 114
             L 158 218
             L 168 218
-            L 168 170
-            L 298 170
+            L 168 116
+            L 298 116
             L 298 310
           "
           stroke="#D72B2B"
@@ -466,32 +466,32 @@ export default function HeroAnimation() {
           {/* Elevated bottom edge of dump box (shows it sits on chassis) */}
           <line x1="168" y1="224" x2="298" y2="224"
             stroke="rgba(215,43,43,0.42)" strokeWidth="1.4" />
-          {/* Vertical ribs from bed top rail (y=170) to bed floor (y=224) */}
-          <line x1="202" y1="170" x2="202" y2="224" stroke="rgba(215,43,43,0.3)" strokeWidth="0.9" />
-          <line x1="236" y1="170" x2="236" y2="224" stroke="rgba(215,43,43,0.3)" strokeWidth="0.9" />
-          <line x1="268" y1="170" x2="268" y2="224" stroke="rgba(215,43,43,0.3)" strokeWidth="0.9" />
+          {/* Vertical ribs across the dump box side */}
+          <line x1="202" y1="116" x2="202" y2="224" stroke="rgba(215,43,43,0.3)" strokeWidth="0.9" />
+          <line x1="236" y1="116" x2="236" y2="224" stroke="rgba(215,43,43,0.3)" strokeWidth="0.9" />
+          <line x1="268" y1="116" x2="268" y2="224" stroke="rgba(215,43,43,0.3)" strokeWidth="0.9" />
           {/* Hydraulic ram hint (diagonal brace from cab back to box front) */}
-          <line x1="158" y1="185" x2="168" y2="218"
+          <line x1="158" y1="176" x2="168" y2="218"
             stroke="rgba(215,43,43,0.35)" strokeWidth="1" />
         </g>
 
-        {/* ── Debris in dump box (sticking above bed top rail at y=170) ── */}
+        {/* ── Debris in dump box (sticking above box top at y=116) ── */}
         <g className="w2-dbr" opacity="0">
-          <rect x="182" y="150" width="14" height="22" rx="0.5"
+          <rect x="182" y="98"  width="14" height="20" rx="0.5"
             stroke="rgba(245,245,245,0.52)" strokeWidth="1.2" fill="none"
-            transform="rotate(12,189,161)" />
-          <rect x="208" y="147" width="11" height="20" rx="0.5"
+            transform="rotate(12,189,108)" />
+          <rect x="208" y="95"  width="11" height="18" rx="0.5"
             stroke="rgba(215,43,43,0.62)"  strokeWidth="1.1" fill="none"
-            transform="rotate(-9,213,157)" />
-          <rect x="236" y="152" width="13" height="19" rx="0.5"
+            transform="rotate(-9,213,104)" />
+          <rect x="236" y="100" width="13" height="17" rx="0.5"
             stroke="rgba(245,245,245,0.44)" strokeWidth="1.1" fill="none"
-            transform="rotate(15,242,161)" />
-          <rect x="258" y="148" width="10" height="18" rx="0.5"
+            transform="rotate(15,242,108)" />
+          <rect x="258" y="96"  width="10" height="16" rx="0.5"
             stroke="rgba(245,245,245,0.38)" strokeWidth="1"   fill="none"
-            transform="rotate(-12,263,157)" />
-          <rect x="278" y="151" width="12" height="21" rx="0.5"
+            transform="rotate(-12,263,104)" />
+          <rect x="278" y="99"  width="12" height="19" rx="0.5"
             stroke="rgba(215,43,43,0.5)"   strokeWidth="1"   fill="none"
-            transform="rotate(8,284,161)" />
+            transform="rotate(8,284,108)" />
         </g>
 
         {/* ══ FRONT WHEEL  cx=80 cy=278 r=32 ══ */}
