@@ -8,6 +8,8 @@ import MobileNav from './MobileNav';
 
 // Links always visible in desktop nav (conversion-focused)
 const PRIMARY = new Set(['Services', 'About', 'Contact']);
+// Links hidden from desktop nav entirely (not in primary or hamburger)
+const HIDDEN  = new Set(['Service Areas', 'Blog']);
 
 export default function Header() {
   const [scrolled, setScrolled]         = useState(false);
@@ -35,7 +37,7 @@ export default function Header() {
   }, []);
 
   const primaryLinks = siteData.nav.links.filter(l => PRIMARY.has(l.label));
-  const moreLinks    = siteData.nav.links.filter(l => !PRIMARY.has(l.label));
+  const moreLinks    = siteData.nav.links.filter(l => !PRIMARY.has(l.label) && !HIDDEN.has(l.label));
 
   return (
     <>
