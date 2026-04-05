@@ -222,11 +222,11 @@ export default function HeroAnimation() {
               to   { stroke-dashoffset: 0;   opacity: 1; }
             }
             @keyframes w2-whl {
-              from { stroke-dashoffset: 240; }
+              from { stroke-dashoffset: 228; }
               to   { stroke-dashoffset: 0;   }
             }
             @keyframes w2-spk {
-              from { stroke-dashoffset: 50; }
+              from { stroke-dashoffset: 75; }
               to   { stroke-dashoffset: 0;  }
             }
             @keyframes w2-rise {
@@ -264,19 +264,19 @@ export default function HeroAnimation() {
               animation: w2-draw 2.1s cubic-bezier(0.4,0,0.2,1) 0.3s forwards;
             }
             .w2-whl {
-              stroke-dasharray: 240; stroke-dashoffset: 240;
+              stroke-dasharray: 228; stroke-dashoffset: 228;
               animation: w2-whl 0.85s ease-out 2.2s forwards;
             }
             .w2-whl2 {
-              stroke-dasharray: 240; stroke-dashoffset: 240;
+              stroke-dasharray: 228; stroke-dashoffset: 228;
               animation: w2-whl 0.85s ease-out 2.35s forwards;
             }
             .w2-spk {
-              stroke-dasharray: 50; stroke-dashoffset: 50;
+              stroke-dasharray: 75; stroke-dashoffset: 75;
               animation: w2-spk 0.42s ease-out 2.85s forwards;
             }
             .w2-spk2 {
-              stroke-dasharray: 50; stroke-dashoffset: 50;
+              stroke-dasharray: 75; stroke-dashoffset: 75;
               animation: w2-spk 0.42s ease-out 2.92s forwards;
             }
             .w2-hub {
@@ -336,71 +336,74 @@ export default function HeroAnimation() {
         </defs>
 
         {/* ── Ambient glow pool under truck ── */}
-        <ellipse cx="162" cy="316" rx="158" ry="20" fill="url(#rg-truck-glow)" />
+        <ellipse cx="160" cy="308" rx="155" ry="20" fill="url(#rg-truck-glow)" />
 
         {/* ── Outer breathing rings ── */}
-        <circle className="w2-glow" cx="162" cy="248" r="136" stroke="#D72B2B" strokeWidth="0.55" />
-        <circle className="w2-glow" cx="162" cy="248" r="108" stroke="#D72B2B" strokeWidth="0.3"
+        <circle className="w2-glow" cx="160" cy="238" r="138" stroke="#D72B2B" strokeWidth="0.55" />
+        <circle className="w2-glow" cx="160" cy="238" r="110" stroke="#D72B2B" strokeWidth="0.3"
           style={{ animationDelay: '0.45s' }} />
 
-        {/* ── Headlight beam (cone left) ── */}
+        {/* ── Headlight beam (cone left from front of truck) ── */}
         <path
           className="w2-hl"
-          d="M 48 224 L 0 196 L 0 255 Z"
+          d="M 19 212 L 0 192 L 0 235 Z"
           fill="rgba(255,140,140,0.1)"
           opacity="0"
         />
 
-        {/* ── Speed lines ── */}
-        <line className="w2-sl1" x1="6"  y1="120" x2="118" y2="120" stroke="#D72B2B" strokeWidth="3.6" strokeLinecap="round" />
-        <line className="w2-sl3" x1="6"  y1="131" x2="132" y2="131" stroke="#D72B2B" strokeWidth="1.5" strokeLinecap="round" />
-        <line className="w2-sl2" x1="6"  y1="140" x2="96"  y2="140" stroke="#D72B2B" strokeWidth="0.9" strokeLinecap="round" />
-        <line className="w2-sl4" x1="6"  y1="148" x2="108" y2="148" stroke="#D72B2B" strokeWidth="0.5" strokeLinecap="round" />
+        {/* ── Speed lines (above roof, emanating left) ── */}
+        <line className="w2-sl1" x1="6"  y1="108" x2="110" y2="108" stroke="#D72B2B" strokeWidth="3.6" strokeLinecap="round" />
+        <line className="w2-sl3" x1="6"  y1="119" x2="124" y2="119" stroke="#D72B2B" strokeWidth="1.5" strokeLinecap="round" />
+        <line className="w2-sl2" x1="6"  y1="128" x2="90"  y2="128" stroke="#D72B2B" strokeWidth="0.9" strokeLinecap="round" />
+        <line className="w2-sl4" x1="6"  y1="136" x2="102" y2="136" stroke="#D72B2B" strokeWidth="0.5" strokeLinecap="round" />
 
         {/* ── Stars ── */}
-        <text x="146" y="135" fontSize="11" fill="white" textAnchor="middle" opacity="0.58">★</text>
-        <text x="162" y="135" fontSize="11" fill="white" textAnchor="middle" opacity="0.58">★</text>
-        <text x="178" y="135" fontSize="11" fill="white" textAnchor="middle" opacity="0.58">★</text>
+        <text x="155" y="123" fontSize="11" fill="white" textAnchor="middle" opacity="0.58">★</text>
+        <text x="171" y="123" fontSize="11" fill="white" textAnchor="middle" opacity="0.58">★</text>
+        <text x="187" y="123" fontSize="11" fill="white" textAnchor="middle" opacity="0.58">★</text>
 
         {/* ── Racing number watermark ── */}
         <text
-          x="172" y="312"
+          x="168" y="308"
           fontSize="220" fontWeight="900"
           fontFamily="'Barlow Condensed','Arial Narrow',sans-serif"
           fill="#D72B2B" textAnchor="middle" opacity="0.028"
         >2</text>
 
-        {/* ── Exhaust puffs (drift right from rear of truck) ── */}
-        <circle className="w2-ex1" cx="292" cy="302" r="7"   fill="rgba(215,43,43,0.25)" />
-        <circle className="w2-ex2" cx="291" cy="297" r="5"   fill="rgba(245,245,245,0.18)" />
-        <circle className="w2-ex3" cx="293" cy="305" r="8.5" fill="rgba(215,43,43,0.18)" />
+        {/* ── Exhaust puffs (drift right from tailgate) ── */}
+        <circle className="w2-ex1" cx="302" cy="295" r="7"   fill="rgba(215,43,43,0.25)" />
+        <circle className="w2-ex2" cx="301" cy="290" r="5"   fill="rgba(245,245,245,0.18)" />
+        <circle className="w2-ex3" cx="303" cy="298" r="8.5" fill="rgba(215,43,43,0.18)" />
 
         {/*═══════════════════════════════════════════════════════
-          TRUCK BODY — detailed pickup side profile
-          Ground:  y = 315
-          Wheels:  front  cx=90  cy=277  r=38
-                   rear   cx=230 cy=277  r=38
+          TRUCK BODY — correct pickup proportions
+          Ground:  y = 305
+          Hood:    x=17→96   (79px, 28%)
+          Cab:     x=96→192  (96px, 34%)
+          Bed:     x=192→302 (110px, 38%) ← the key fix
+          Wheels:  front cx=76 cy=269 r=36
+                   rear  cx=248 cy=269 r=36
         ═══════════════════════════════════════════════════════*/}
         <path
           className="w2-body"
           d="
-            M 42 315
-            L 42 268
-            L 56 268
-            L 56 235
-            L 65 220
-            L 75 208
-            L 120 192
-            L 126 190
-            L 148 152
-            L 208 148
-            L 232 152
-            L 238 180
-            L 244 200
-            L 258 190
-            L 258 172
-            L 292 172
-            L 292 315
+            M 17 305
+            L 17 258
+            L 32 258
+            L 32 225
+            L 44 213
+            L 56 203
+            L 88 188
+            L 96 186
+            L 114 146
+            L 162 142
+            L 174 147
+            L 180 170
+            L 184 194
+            L 192 180
+            L 192 170
+            L 302 170
+            L 302 305
           "
           stroke="#D72B2B"
           strokeWidth="3.2"
@@ -411,7 +414,7 @@ export default function HeroAnimation() {
         {/* ── Windshield glass fill ── */}
         <path
           className="w2-glass"
-          d="M 126 190 L 148 152 L 208 148 L 208 190 Z"
+          d="M 96 186 L 114 146 L 162 142 L 162 186 Z"
           fill="rgba(215,43,43,0.1)"
           stroke="#D72B2B"
           strokeWidth="1.2"
@@ -421,7 +424,7 @@ export default function HeroAnimation() {
         {/* ── Rear window glass fill ── */}
         <path
           className="w2-glass"
-          d="M 208 148 L 232 152 L 238 180 L 244 200 L 208 200 Z"
+          d="M 162 142 L 174 147 L 180 170 L 184 194 L 162 194 Z"
           fill="rgba(215,43,43,0.07)"
           stroke="#D72B2B"
           strokeWidth="1"
@@ -432,7 +435,7 @@ export default function HeroAnimation() {
         {/* ── Headlight rectangle ── */}
         <rect
           className="w2-det"
-          x="43" y="218" width="13" height="11" rx="1.5"
+          x="18" y="206" width="14" height="11" rx="1.5"
           stroke="#D72B2B" strokeWidth="1.2"
           fill="rgba(255,200,200,0.2)"
           opacity="0"
@@ -440,82 +443,88 @@ export default function HeroAnimation() {
 
         {/* ── Grille vertical slats ── */}
         <g className="w2-det" opacity="0">
-          <line x1="58"   y1="238" x2="58"   y2="265" stroke="rgba(215,43,43,0.55)" strokeWidth="0.9" />
-          <line x1="61.5" y1="238" x2="61.5" y2="265" stroke="rgba(215,43,43,0.55)" strokeWidth="0.9" />
-          <line x1="65"   y1="238" x2="65"   y2="265" stroke="rgba(215,43,43,0.55)" strokeWidth="0.9" />
-          <line x1="68.5" y1="238" x2="68.5" y2="265" stroke="rgba(215,43,43,0.55)" strokeWidth="0.9" />
+          <line x1="34"   y1="228" x2="34"   y2="255" stroke="rgba(215,43,43,0.55)" strokeWidth="0.9" />
+          <line x1="37.5" y1="228" x2="37.5" y2="255" stroke="rgba(215,43,43,0.55)" strokeWidth="0.9" />
+          <line x1="41"   y1="228" x2="41"   y2="255" stroke="rgba(215,43,43,0.55)" strokeWidth="0.9" />
+          <line x1="44.5" y1="228" x2="44.5" y2="255" stroke="rgba(215,43,43,0.55)" strokeWidth="0.9" />
         </g>
 
         {/* ── Door panel line + handle ── */}
         <g className="w2-det" opacity="0">
-          <line x1="150" y1="202" x2="244" y2="202"
+          <line x1="96" y1="202" x2="184" y2="202"
             stroke="rgba(215,43,43,0.38)" strokeWidth="0.9" />
-          <rect x="186" y="197" width="16" height="4" rx="2"
+          <rect x="132" y="197" width="16" height="4" rx="2"
             stroke="rgba(215,43,43,0.52)" strokeWidth="0.9" fill="none" />
         </g>
 
         {/* ── Running board ── */}
         <line
           className="w2-det"
-          x1="118" y1="234" x2="244" y2="234"
+          x1="100" y1="220" x2="184" y2="220"
           stroke="rgba(215,43,43,0.28)" strokeWidth="2"
           opacity="0"
         />
 
         {/* ── Bed stake pockets + floor line ── */}
         <g className="w2-bed" opacity="0">
-          <line x1="260" y1="215" x2="290" y2="215" stroke="rgba(215,43,43,0.32)" strokeWidth="1" />
-          <line x1="266" y1="172" x2="266" y2="188" stroke="rgba(215,43,43,0.44)" strokeWidth="1.2" />
-          <line x1="276" y1="172" x2="276" y2="188" stroke="rgba(215,43,43,0.44)" strokeWidth="1.2" />
-          <line x1="286" y1="172" x2="286" y2="188" stroke="rgba(215,43,43,0.44)" strokeWidth="1.2" />
+          {/* Floor */}
+          <line x1="194" y1="212" x2="300" y2="212" stroke="rgba(215,43,43,0.28)" strokeWidth="0.9" />
+          {/* 5 stake pockets along top rail */}
+          <line x1="200" y1="170" x2="200" y2="184" stroke="rgba(215,43,43,0.44)" strokeWidth="1.2" />
+          <line x1="218" y1="170" x2="218" y2="184" stroke="rgba(215,43,43,0.44)" strokeWidth="1.2" />
+          <line x1="236" y1="170" x2="236" y2="184" stroke="rgba(215,43,43,0.44)" strokeWidth="1.2" />
+          <line x1="256" y1="170" x2="256" y2="184" stroke="rgba(215,43,43,0.44)" strokeWidth="1.2" />
+          <line x1="276" y1="170" x2="276" y2="184" stroke="rgba(215,43,43,0.44)" strokeWidth="1.2" />
+          <line x1="294" y1="170" x2="294" y2="184" stroke="rgba(215,43,43,0.44)" strokeWidth="1.2" />
         </g>
 
-        {/* ── Debris in truck bed ── */}
+        {/* ── Debris in truck bed (spread across the wider bed) ── */}
         <g className="w2-dbr" opacity="0">
-          <rect x="263" y="177" width="12" height="16" rx="0.5"
+          <rect x="200" y="156" width="13" height="17" rx="0.5"
             stroke="rgba(245,245,245,0.52)" strokeWidth="1.2" fill="none"
-            transform="rotate(13,269,185)" />
-          <rect x="277" y="175" width="9"  height="13" rx="0.5"
-            stroke="rgba(245,245,245,0.42)" strokeWidth="1.1" fill="none"
-            transform="rotate(-8,281,181)" />
-          <rect x="266" y="163" width="8"  height="10" rx="0.5"
-            stroke="rgba(215,43,43,0.6)"   strokeWidth="1"   fill="none"
-            transform="rotate(-17,270,168)" />
-          <rect x="280" y="163" width="11" height="12" rx="0.5"
-            stroke="rgba(245,245,245,0.36)" strokeWidth="1"   fill="none"
-            transform="rotate(6,285,169)" />
+            transform="rotate(14,206,164)" />
+          <rect x="222" y="153" width="11" height="15" rx="0.5"
+            stroke="rgba(215,43,43,0.62)" strokeWidth="1.1" fill="none"
+            transform="rotate(-11,227,160)" />
+          <rect x="244" y="158" width="10" height="14" rx="0.5"
+            stroke="rgba(245,245,245,0.44)" strokeWidth="1.1" fill="none"
+            transform="rotate(8,249,165)" />
+          <rect x="264" y="155" width="12" height="16" rx="0.5"
+            stroke="rgba(245,245,245,0.38)" strokeWidth="1" fill="none"
+            transform="rotate(-16,270,163)" />
+          <rect x="282" y="157" width="9"  height="13" rx="0.5"
+            stroke="rgba(215,43,43,0.5)"   strokeWidth="1" fill="none"
+            transform="rotate(10,286,163)" />
         </g>
 
-        {/* ══ FRONT WHEEL ══ */}
-        <circle className="w2-whl"  cx="90" cy="277" r="38" stroke="#D72B2B" strokeWidth="2.8" />
-        <circle className="w2-whl"  cx="90" cy="277" r="26" stroke="rgba(215,43,43,0.35)" strokeWidth="1.2" />
-        {/* 4-spoke cross + diagonal cross */}
-        <line className="w2-spk" x1="90"  y1="253" x2="90"  y2="301" stroke="#D72B2B" strokeWidth="1.3" />
-        <line className="w2-spk" x1="66"  y1="277" x2="114" y2="277" stroke="#D72B2B" strokeWidth="1.3" />
-        <line className="w2-spk" x1="73"  y1="260" x2="107" y2="294" stroke="#D72B2B" strokeWidth="1" strokeOpacity="0.55" />
-        <line className="w2-spk" x1="107" y1="260" x2="73"  y2="294" stroke="#D72B2B" strokeWidth="1" strokeOpacity="0.55" />
+        {/* ══ FRONT WHEEL  cx=76 cy=269 r=36 ══ */}
+        <circle className="w2-whl"  cx="76" cy="269" r="36" stroke="#D72B2B" strokeWidth="2.8" />
+        <circle className="w2-whl"  cx="76" cy="269" r="24" stroke="rgba(215,43,43,0.35)" strokeWidth="1.2" />
+        <line className="w2-spk" x1="76"  y1="233" x2="76"  y2="302" stroke="#D72B2B" strokeWidth="1.3" />
+        <line className="w2-spk" x1="40"  y1="269" x2="112" y2="269" stroke="#D72B2B" strokeWidth="1.3" />
+        <line className="w2-spk" x1="51"  y1="244" x2="101" y2="294" stroke="#D72B2B" strokeWidth="1" strokeOpacity="0.55" />
+        <line className="w2-spk" x1="101" y1="244" x2="51"  y2="294" stroke="#D72B2B" strokeWidth="1" strokeOpacity="0.55" />
         <g className="w2-hub">
-          <circle cx="90" cy="277" r="9"   fill="#D72B2B" />
-          <circle cx="90" cy="277" r="4.5" fill="#0d0d0d" />
+          <circle cx="76" cy="269" r="9"   fill="#D72B2B" />
+          <circle cx="76" cy="269" r="4.5" fill="#0d0d0d" />
         </g>
 
-        {/* ══ REAR WHEEL ══ */}
-        <circle className="w2-whl2" cx="230" cy="277" r="38" stroke="#D72B2B" strokeWidth="2.8" />
-        <circle className="w2-whl2" cx="230" cy="277" r="26" stroke="rgba(215,43,43,0.35)" strokeWidth="1.2" />
-        {/* 4-spoke cross + diagonal cross */}
-        <line className="w2-spk2" x1="230" y1="253" x2="230" y2="301" stroke="#D72B2B" strokeWidth="1.3" />
-        <line className="w2-spk2" x1="206" y1="277" x2="254" y2="277" stroke="#D72B2B" strokeWidth="1.3" />
-        <line className="w2-spk2" x1="213" y1="260" x2="247" y2="294" stroke="#D72B2B" strokeWidth="1" strokeOpacity="0.55" />
-        <line className="w2-spk2" x1="247" y1="260" x2="213" y2="294" stroke="#D72B2B" strokeWidth="1" strokeOpacity="0.55" />
+        {/* ══ REAR WHEEL  cx=248 cy=269 r=36 ══ */}
+        <circle className="w2-whl2" cx="248" cy="269" r="36" stroke="#D72B2B" strokeWidth="2.8" />
+        <circle className="w2-whl2" cx="248" cy="269" r="24" stroke="rgba(215,43,43,0.35)" strokeWidth="1.2" />
+        <line className="w2-spk2" x1="248" y1="233" x2="248" y2="302" stroke="#D72B2B" strokeWidth="1.3" />
+        <line className="w2-spk2" x1="212" y1="269" x2="284" y2="269" stroke="#D72B2B" strokeWidth="1.3" />
+        <line className="w2-spk2" x1="223" y1="244" x2="273" y2="294" stroke="#D72B2B" strokeWidth="1" strokeOpacity="0.55" />
+        <line className="w2-spk2" x1="273" y1="244" x2="223" y2="294" stroke="#D72B2B" strokeWidth="1" strokeOpacity="0.55" />
         <g className="w2-hub2">
-          <circle cx="230" cy="277" r="9"   fill="#D72B2B" />
-          <circle cx="230" cy="277" r="4.5" fill="#0d0d0d" />
+          <circle cx="248" cy="269" r="9"   fill="#D72B2B" />
+          <circle cx="248" cy="269" r="4.5" fill="#0d0d0d" />
         </g>
 
         {/* ── Ground line ── */}
         <line
           className="w2-tag"
-          x1="18" y1="318" x2="302" y2="318"
+          x1="10" y1="308" x2="308" y2="308"
           stroke="rgba(215,43,43,0.25)" strokeWidth="0.8"
           opacity="0"
         />
@@ -523,7 +532,7 @@ export default function HeroAnimation() {
         {/* ── Ground reflection haze ── */}
         <ellipse
           className="w2-tag"
-          cx="165" cy="323" rx="138" ry="5.5"
+          cx="160" cy="313" rx="148" ry="5.5"
           fill="rgba(215,43,43,0.05)"
           opacity="0"
         />
@@ -531,7 +540,7 @@ export default function HeroAnimation() {
         {/* ── Tagline ── */}
         <text
           className="w2-tag"
-          x="162" y="342"
+          x="160" y="332"
           fontSize="12"
           fontWeight="700"
           fontFamily="'Barlow Condensed','Arial Narrow',sans-serif"
@@ -546,7 +555,7 @@ export default function HeroAnimation() {
         {/* ── URL sub-tagline ── */}
         <text
           className="w2-tag"
-          x="162" y="358"
+          x="160" y="348"
           fontSize="7.5"
           fontWeight="400"
           fontFamily="'Barlow Condensed','Arial Narrow',sans-serif"
