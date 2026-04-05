@@ -47,11 +47,13 @@ const inputStyle: React.CSSProperties = {
 function OptionCard({
   label,
   detail,
+  icon,
   selected,
   onClick,
 }: {
   label: string;
   detail?: string;
+  icon?: string;
   selected: boolean;
   onClick: () => void;
 }) {
@@ -71,6 +73,11 @@ function OptionCard({
         width: '100%',
       }}
     >
+      {icon && (
+        <span style={{ display: 'block', fontSize: '2rem', lineHeight: 1, marginBottom: '8px' }}>
+          {icon}
+        </span>
+      )}
       <span
         className="font-body"
         style={{
@@ -238,6 +245,7 @@ export default function QuizPage() {
                   key={opt.value}
                   label={opt.label}
                   detail={opt.detail}
+                  icon={opt.icon}
                   selected={q0Selected.includes(opt.value)}
                   onClick={() => toggleMulti('q0', opt.value)}
                 />
@@ -282,6 +290,7 @@ export default function QuizPage() {
                   key={opt.value}
                   label={opt.label}
                   detail={opt.detail}
+                  icon={opt.icon}
                   selected={answers.q1 === opt.value}
                   onClick={() => pickSingle('q1', opt.value, 'q2')}
                 />
@@ -306,6 +315,7 @@ export default function QuizPage() {
                   key={opt.value}
                   label={opt.label}
                   detail={opt.detail}
+                  icon={opt.icon}
                   selected={answers.q2 === opt.value}
                   onClick={() => pickSingle('q2', opt.value, 'q3')}
                 />
@@ -330,6 +340,7 @@ export default function QuizPage() {
                   key={opt.value}
                   label={opt.label}
                   detail={opt.detail}
+                  icon={opt.icon}
                   selected={answers.q3 === opt.value}
                   onClick={() => pickSingle('q3', opt.value, 'contact')}
                 />

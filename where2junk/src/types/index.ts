@@ -47,6 +47,8 @@ export interface BlogPost {
 export interface QuizOption {
   label: string;
   value: string;
+  detail?: string;
+  icon?: string;
   service?: string;
 }
 
