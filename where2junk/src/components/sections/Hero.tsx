@@ -1,10 +1,11 @@
 // Hero.tsx — Where2 Junk Removal Services LLC
 // Pattern: hero-server-client-animation-split.md
-// This file is a server component — HeroEffects is the client boundary.
-// Animation: SVG Lightning Bolts + CSS speed lines + pulse rings
+// This file is a server component — HeroEffects + HeroAnimation are the client boundaries.
+// Animation: CSS speed lines (HeroEffects bg) + canvas truck (HeroAnimation right column)
 // All copy sourced from siteData.hero — zero hard-coded strings.
 
 import HeroEffects from './HeroEffects';
+import HeroAnimation from './HeroAnimation';
 import Button from '@/components/ui/Button';
 import Badge from '@/components/ui/Badge';
 import { siteData } from '@/data/site';
@@ -40,17 +41,20 @@ export default function Hero() {
                 {hero.eyebrow}
               </p>
 
-              {/* H1 — one H1 per page per SEO rule */}
+              {/* H1 — shimmer on second line */}
               <h1
                 className="hero-item-2 font-display font-black uppercase leading-none"
                 style={{
                   fontSize: 'clamp(3.5rem, 8vw, 7rem)',
                   letterSpacing: '-0.02em',
                   color: 'var(--text-primary)',
-                  whiteSpace: 'pre-line',
                 }}
               >
-                {hero.headline}
+                {hero.headline.split('\n')[0]}
+                <br />
+                <span className="hero-haul-shimmer">
+                  {hero.headline.split('\n')[1]}
+                </span>
               </h1>
 
               {/* Subheadline */}
@@ -69,7 +73,7 @@ export default function Hero() {
                 <Button href={hero.ctaSecondary.href} variant="ghost" size="lg">
                   {hero.ctaSecondary.label}
                 </Button>
-                {/* Phone — tappable, never hidden (design-system.md Section 10, anti-pattern #9) */}
+                {/* Phone — tappable, never hidden */}
                 <a
                   href={`tel:+${meta.phoneRaw}`}
                   className="font-mono font-medium text-base lg:text-lg transition-colors duration-200"
@@ -80,7 +84,7 @@ export default function Hero() {
                 </a>
               </div>
 
-              {/* Trust badges (3 inline) */}
+              {/* Trust badges */}
               <div className="hero-item-5 flex flex-wrap gap-2 items-center">
                 {hero.badges.map((badge) => (
                   <Badge key={badge} variant="muted">
@@ -106,49 +110,14 @@ export default function Hero() {
               </a>
             </div>
 
-            {/* ── Right column: owner photo — hidden on mobile ── */}
-            <div className="hidden lg:flex items-center justify-center">
-              <div
-                className="w-full max-w-[400px] aspect-[4/5] flex items-center justify-center"
-                style={{
-                  background: 'var(--bg-card)',
-                  border: '2px solid var(--primary-muted)',
-                }}
-              >
-                {/*
-                  Owner photo placeholder.
-                  Replace with <Image> when Joshua Ortega provides headshot.
-                  fal.ai prompt is in design-system.md Section 6 (About section prompt).
-                */}
-                <div className="text-center px-6">
-                  <div
-                    className="w-16 h-16 mx-auto mb-4 flex items-center justify-center"
-                    style={{ border: '2px solid var(--primary-muted)', color: 'var(--primary)' }}
-                  >
-                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
-                      <circle cx="12" cy="8" r="4" />
-                      <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
-                    </svg>
-                  </div>
-                  <p
-                    className="font-mono text-xs uppercase tracking-widest"
-                    style={{ color: 'var(--text-muted)' }}
-                  >
-                    Joshua Ortega
-                  </p>
-                  <p
-                    className="font-mono text-xs mt-1"
-                    style={{ color: 'var(--text-muted)', opacity: 0.6 }}
-                  >
-                    Photo coming soon
-                  </p>
-                </div>
-              </div>
+            {/* ── Right column: custom canvas + SVG truck animation ── */}
+            <div className="hidden lg:flex items-center justify-end">
+              <HeroAnimation />
             </div>
 
           </div>
 
-          {/* ── Scroll chevron — hidden on mobile, bounces to guide desktop users ── */}
+          {/* ── Scroll chevron ── */}
           <div className="hidden lg:flex justify-start mt-16 ml-1">
             <div
               className="hero-chevron w-6 h-6 flex items-center justify-center"
