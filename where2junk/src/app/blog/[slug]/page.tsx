@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import Link from 'next/link';
 import { siteData } from '@/data/site';
 import { notFound } from 'next/navigation';
@@ -63,8 +64,20 @@ export default async function BlogPostPage({ params }: Props) {
           }),
         }}
       />
+      {/* Cover image */}
+      <div className="relative w-full overflow-hidden" style={{ aspectRatio: '21/9', background: 'var(--bg-card)' }}>
+        <Image
+          src={`/images/blog/${post.slug}.jpg`}
+          alt={post.title}
+          fill
+          className="object-cover"
+          priority
+          sizes="100vw"
+        />
+      </div>
+
       {/* Article header */}
-      <section className="pt-24 pb-8" style={{ background: 'var(--bg-base)' }}>
+      <section className="pt-12 pb-8" style={{ background: 'var(--bg-base)' }}>
         <div className="max-w-[var(--container-max)] mx-auto px-4 sm:px-6 lg:px-8">
           <div style={{ maxWidth: '72ch' }}>
             <FadeUp>

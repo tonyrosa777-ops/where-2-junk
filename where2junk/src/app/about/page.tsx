@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import { siteData } from '@/data/site';
 import FadeUp from '@/components/animations/FadeUp';
 import ScaleIn from '@/components/animations/ScaleIn';
@@ -158,7 +159,56 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ── 4. Faith Statement ───────────────────────────────────── */}
+      {/* ── 4. Work Gallery ─────────────────────────────────────── */}
+      <section
+        className="py-16 md:py-24"
+        style={{ background: 'var(--bg-base)' }}
+        aria-label="Our work gallery"
+      >
+        <div className="max-w-[var(--container-max)] mx-auto px-4 sm:px-6 lg:px-8">
+          <FadeUp className="text-center mb-12">
+            <span
+              className="font-mono text-xs uppercase tracking-widest"
+              style={{ color: 'var(--primary)' }}
+            >
+              Our Work
+            </span>
+            <h2
+              className="font-display font-black uppercase leading-tight mt-3 text-3xl md:text-4xl lg:text-5xl"
+              style={{ color: 'var(--text-primary)' }}
+            >
+              Jobs We Have Hauled
+            </h2>
+          </FadeUp>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3">
+            {[
+              { file: 'gallery-01', alt: 'Loaded junk removal truck ready for haul' },
+              { file: 'gallery-02', alt: 'Cluttered garage before cleanout' },
+              { file: 'gallery-03', alt: 'Empty garage after cleanout' },
+              { file: 'gallery-04', alt: 'Construction debris removal at renovation site' },
+              { file: 'gallery-05', alt: 'Yard waste and storm debris removal' },
+              { file: 'gallery-06', alt: 'Furniture removal from residential home' },
+              { file: 'gallery-07', alt: 'Sorted donation items during cleanout' },
+              { file: 'gallery-08', alt: 'Before and after basement cleanout' },
+            ].map(({ file, alt }, i) => (
+              <ScaleIn key={file} delay={i * 0.05}>
+                <div className="relative overflow-hidden" style={{ aspectRatio: '16/9' }}>
+                  <Image
+                    src={`/images/gallery/${file}.jpg`}
+                    alt={alt}
+                    fill
+                    className="object-cover transition-transform duration-500 hover:scale-105"
+                    sizes="(max-width: 768px) 50vw, 25vw"
+                  />
+                </div>
+              </ScaleIn>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── 5. Faith Statement ───────────────────────────────────── */}
       <section
         className="py-16 md:py-20"
         style={{ background: 'var(--bg-elevated)' }}
@@ -187,7 +237,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ── 5. CTA Banner ────────────────────────────────────────── */}
+      {/* ── 6. CTA Banner ────────────────────────────────────────── */}
       <section
         className="py-16"
         style={{ background: 'var(--primary)' }}

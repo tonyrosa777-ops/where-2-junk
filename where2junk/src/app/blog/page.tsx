@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import Link from 'next/link';
 import { siteData } from '@/data/site';
 import FadeUp from '@/components/animations/FadeUp';
@@ -37,8 +38,19 @@ export default function BlogPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {posts.map((post, i) => (
               <FadeUp key={post.slug} delay={i * 0.06}>
-                <article className="flex flex-col h-full p-6 md:p-8"
+                <article className="flex flex-col h-full"
                   style={{ background: 'var(--bg-card)', border: '1px solid rgba(245,245,245,0.08)' }}>
+                  {/* Cover image */}
+                  <div className="relative w-full overflow-hidden" style={{ aspectRatio: '16/9' }}>
+                    <Image
+                      src={`/images/blog/${post.slug}.jpg`}
+                      alt={post.title}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    />
+                  </div>
+                  <div className="flex flex-col flex-1 p-6 md:p-8">
                   {/* Category badge */}
                   <span className="inline-block self-start font-mono text-xs uppercase tracking-widest px-3 py-1 mb-4"
                     style={{ border: '1px solid var(--primary-muted)', color: 'var(--primary)' }}>
@@ -63,6 +75,7 @@ export default function BlogPage() {
                     style={{ color: 'var(--primary)' }}>
                     Read More &rarr;
                   </Link>
+                  </div>
                 </article>
               </FadeUp>
             ))}
