@@ -12,6 +12,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/faq',
     '/quiz',
     '/services',
+    '/areas',
     '/blog',
     '/testimonials',
     '/gallery',

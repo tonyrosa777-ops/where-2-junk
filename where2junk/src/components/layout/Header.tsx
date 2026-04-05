@@ -79,9 +79,13 @@ export default function Header() {
               {siteData.nav.links.map((link) => {
                 if (link.label === 'Services') {
                   return (
-                    <div key={link.href} ref={dropdownRef} className="relative">
-                      <button
-                        onClick={() => setServicesOpen(!servicesOpen)}
+                    <div key={link.href} ref={dropdownRef} className="relative"
+                      onMouseEnter={() => setServicesOpen(true)}
+                      onMouseLeave={() => setServicesOpen(false)}
+                    >
+                      <Link
+                        href="/services"
+                        onClick={() => setServicesOpen(false)}
                         className="flex items-center gap-1 px-3 py-2 transition-colors font-display font-black uppercase text-sm tracking-widest"
                         style={{ color: servicesOpen ? 'var(--text-primary)' : 'var(--text-secondary)' }}
                         onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--text-primary)')}
@@ -94,7 +98,7 @@ export default function Header() {
                           size={13}
                           className={`transition-transform duration-200 ${servicesOpen ? 'rotate-180' : ''}`}
                         />
-                      </button>
+                      </Link>
 
                       <AnimatePresence>
                         {servicesOpen && (
@@ -170,9 +174,13 @@ export default function Header() {
 
                 if (link.label === 'Service Areas') {
                   return (
-                    <div key={link.href} ref={areasDropdownRef} className="relative">
-                      <button
-                        onClick={() => setAreasOpen(!areasOpen)}
+                    <div key={link.href} ref={areasDropdownRef} className="relative"
+                      onMouseEnter={() => setAreasOpen(true)}
+                      onMouseLeave={() => setAreasOpen(false)}
+                    >
+                      <Link
+                        href="/areas"
+                        onClick={() => setAreasOpen(false)}
                         className="flex items-center gap-1 px-3 py-2 transition-colors font-display font-black uppercase text-sm tracking-widest"
                         style={{ color: areasOpen ? 'var(--text-primary)' : 'var(--text-secondary)' }}
                         onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--text-primary)')}
@@ -185,7 +193,7 @@ export default function Header() {
                           size={13}
                           className={`transition-transform duration-200 ${areasOpen ? 'rotate-180' : ''}`}
                         />
-                      </button>
+                      </Link>
 
                       <AnimatePresence>
                         {areasOpen && (
