@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { siteData } from '@/data/site';
 import FadeUp from '@/components/animations/FadeUp';
-import CalendlyWidget from '@/components/ui/CalendlyWidget';
+import { BookingCalendar } from '@/components/ui/BookingCalendar';
 
 export const metadata: Metadata = {
   title: 'Book Junk Removal Online | Where2 Junk Removal Manchester NH',
@@ -55,17 +55,14 @@ export default function BookingPage() {
         </div>
       </section>
 
-      {/* ── 2. Calendly Widget ───────────────────────────────────── */}
+      {/* ── 2. Booking Calendar ──────────────────────────────────── */}
       <section
         className="pb-6"
         style={{ background: 'var(--bg-base)' }}
         aria-label="Booking calendar"
       >
         <div className="max-w-[800px] mx-auto w-full px-4">
-          <CalendlyWidget
-            url={process.env.NEXT_PUBLIC_CALENDLY_URL ?? ''}
-            className="w-full"
-          />
+          <BookingCalendar />
         </div>
       </section>
 
