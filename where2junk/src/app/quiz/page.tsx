@@ -212,7 +212,7 @@ export default function QuizPage() {
 
   // result
   const resultKey  = getResultKey(answers);
-  const resultData = (q.results as Record<string, typeof q.results['junk-removal']>)[resultKey]
+  const resultData = (q.results as unknown as Record<string, typeof q.results['junk-removal']>)[resultKey]
     ?? q.results['junk-removal'];
 
   // ── Content per step ──────────────────────────────────────────────────────
