@@ -5,7 +5,7 @@
 **Business Type:** Local residential & commercial junk removal service
 **Launch Target:** ASAP — April 2026
 **Last Updated:** 2026-04-04
-**Current Phase:** Stage 1D — Homepage Sections (next up)
+**Current Phase:** Phase 12 — Assets (next up)
 
 ---
 
@@ -17,14 +17,14 @@
 | 1 | Research + Design System | ✅ Complete |
 | 2 | Scaffold | ✅ Complete |
 | 3 | Design System + Hero | ✅ Complete |
-| 4 | Homepage Sections | ⬜ Not Started |
-| 5 | Core Pages | ⬜ Not Started |
-| 6 | Niche-Specific Pages | ⬜ Not Started |
-| 7 | Blog | ⬜ Not Started |
+| 4 | Homepage Sections | ✅ Complete |
+| 5 | Core Pages | ✅ Complete |
+| 6 | Niche-Specific Pages | ✅ Complete |
+| 7 | Blog | ✅ Complete |
 | 8 | Shop | ⬜ Not Started |
 | 9 | Booking | ⬜ Not Started |
-| 10 | SEO + AEO | ⬜ Not Started |
-| 11 | Infrastructure | ⬜ Not Started |
+| 10 | SEO + AEO | ✅ Complete |
+| 11 | Infrastructure | ✅ Complete |
 | 12 | Assets | ⬜ Not Started |
 | 13 | Pre-Launch Audit | ⬜ Not Started |
 | 14 | Client Revision Pass | ⬜ Not Started |
@@ -124,7 +124,37 @@
 - Hours: Mon-Sat 7am-7pm, Sun by appointment (LOW CONFIDENCE — assumed)
 - Photography: fal.ai placeholders throughout until real photos received
 
-**Next Session Starts At:** Stage 1D — Homepage Sections (TrustBar, ServicesGrid, HowItWorks, WhyChooseUs, StatsCounter, ServiceAreasSection, TestimonialsCarousel, Quiz CTA, Blog preview, Booking teaser, FinalCTABanner)
+### Session 3 — 2026-04-04 (Stage 1D complete)
+**Completed:**
+- Agent 1: Header.tsx (sticky dark nav, services dropdown), MobileNav.tsx (slide-out drawer), Footer.tsx (4-col: brand/services/areas/contact), StickyCallBar.tsx (mobile fixed bottom bar)
+- Agent 2: TrustBar.tsx (4 trust signals strip, bg-elevated), HowItWorks.tsx (4 numbered steps with ghost numbers)
+- Agent 3: ServicesGrid.tsx (2x2 grid, StaggerContainer, icon map), WhyChooseUs.tsx (4 icon cards, FadeUp stagger)
+- Agent 4: StatsCounter.tsx (red accent band, CountUp, grid-cols-4), AboutTeaser.tsx (2-col, photo placeholder, faith statement)
+- Agent 5: TestimonialsCarousel.tsx (embla-carousel, 4 featured, auto-advance 6s, dot indicators)
+- Agent 6: BlogPreview.tsx (3 post cards, placeholder slots), FinalCTABanner.tsx (red accent band, white CTAs)
+- Agent 7: QuizCTA.tsx (4 option pills → /quiz), BookingTeaser.tsx (CalendlyWidget inline)
+- Orchestrator: page.tsx wired with all 12 sections in order, layout.tsx gets Header+Footer+StickyCallBar
+- Build fixes: Facebook icon (lucide-react removed it, replaced with inline SVG), FinalCTABanner + Footer missing 'use client', staggerItem ease cast to cubic bezier
+- Commit 2259a0f pushed to tonyrosa777-ops/where-2-junk
+
+**Build status:** 27 routes clean, 0 TypeScript errors
+
+### Session 4 — 2026-04-04 (Phase 5 complete)
+**Completed:**
+- About page: hero, story (2-col w/ photo placeholder), values grid, faith statement, CTA
+- Booking page: hero, CalendlyWidget (graceful fallback), phone row, trust strip
+- Services index: hero, StaggerContainer card grid (ServicesCardGrid.tsx client component), CTA
+- Services [slug]: SSG ×4, service hero, features grid, ServiceFAQAccordion (client), CTA
+- Contact: server+client split (ContactClient.tsx), contact form → /api/contact, info panel, map placeholder
+- FAQ: server+client split (FAQClient.tsx), AnimatePresence accordion (8 items)
+- Testimonials: server+client split (TestimonialsClient.tsx), featured quote, filter bar, paginated grid 8/page
+- Quiz: 4-step state machine (multiSelect pills → singleSelect cards × 2 → lead capture → result), /api/quote POST
+- Fixed: /api/contact Zod schema swapped phone/email required — phone now required, email optional (correct for local service biz)
+- Commit 248ad7e pushed to tonyrosa777-ops/where-2-junk
+
+**Build status:** 27 routes clean, 0 TypeScript errors — first try
+
+**Next Session Starts At:** Phase 6 — Niche-Specific Pages (service area pages /areas/[city])
 - 27 routes build clean (static + SSG + dynamic)
 - Design tokens: red/black/white motorsport palette, Barlow Condensed + Barlow + JetBrains Mono
 - 8 animation wrappers (FadeIn, FadeUp, SlideIn, ScaleIn, StaggerContainer, CountUp, ParallaxWrapper, RevealText)
@@ -140,3 +170,31 @@
 - Calendly URL: Joshua needs to create account + booking type (blocks /booking live wiring)
 - Photography: fal.ai applies until Joshua provides job photos + headshot
 - Instagram handle: unknown (conditional component not activated)
+
+### Session 5 (continued) — Phase 11 complete
+**Completed:**
+- `resend` npm package installed
+- `/api/contact` wired: sends email to `RESEND_NOTIFICATION_EMAIL` (default `hello@where2junk.com`) when contact form submits
+- `/api/quote` wired: sends email with name, phone, email, job description on quiz quote submission
+- Both routes: graceful no-op when `RESEND_API_KEY` is unset (build/dev works without it)
+- `.env.local.example` updated with `RESEND_NOTIFICATION_EMAIL` and `RESEND_FROM_EMAIL` vars
+- Build: 39 pages, 0 TS errors
+
+**For Joshua to activate:** Create Resend account at resend.com, verify where2junk.com domain, add `RESEND_API_KEY` to Vercel env vars.
+
+### Session 5 — 2026-04-04 (Phase 10 complete)
+**Completed:**
+- Agent 1: `src/app/sitemap.ts` (new) — covers all static pages, service slugs, area slugs, blog posts; /pricing excluded
+- Agent 1: `src/app/robots.ts` (new) — allows all, disallows /pricing and /api/
+- Agent 1: `src/app/layout.tsx` — openGraph extended with OG image (1200x630); twitter card added
+- Agent 2: `src/app/page.tsx` — LocalBusiness+HomeAndConstructionBusiness + WebSite JSON-LD before Hero
+- Agent 2: `src/app/blog/[slug]/page.tsx` — Article JSON-LD before article header
+- Agent 2: `src/app/faq/page.tsx` — FAQPage JSON-LD from siteData.faq; file rewritten to wrap FAQClient in fragment
+- Agent 2: `src/app/services/[slug]/page.tsx` — Service JSON-LD before service hero section
+- Build: 39 pages, 0 TypeScript errors
+
+**Next Session Starts At:** Phase 11 — Infrastructure (Resend wiring for /api/contact and /api/quote)
+**Blockers (unchanged):**
+- Calendly URL — Joshua
+- Photography — Joshua
+- Instagram handle — Joshua
