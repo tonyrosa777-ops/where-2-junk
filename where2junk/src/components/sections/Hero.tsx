@@ -100,7 +100,7 @@ export default function Hero() {
             </div>
 
             {/* ── Right column: custom JS animation ── */}
-            <div className="hidden lg:flex items-center justify-center">
+            <div className="hidden lg:flex items-center justify-end">
               <HeroAnimation />
             </div>
 

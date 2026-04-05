@@ -1,28 +1,22 @@
 'use client';
 
 /**
- * HeroAnimation — Where2 Junk right-column animated visual
+ * HeroAnimation — Where2 Junk hero right-column
  *
- * Pattern: Sylvia Rich StStephensCrest (SVG self-draw) + HeroParticles (canvas)
- * Brand: red #D72B2B, white, black — motorsport/junk removal
- *
- * Sequence:
- *   0.0s  Speed lines begin looping
- *   0.3s  Truck body path draws (stroke-dasharray, 1.8s)
- *   1.8s  Windshield fills, debris fades in
- *   2.0s  Wheels draw (circles)
- *   2.5s  Hub caps pop
- *   2.8s  Tagline fades in
- *   3.0s  Glow ring starts pulsing
+ * "Bigger, more interesting, luxurious, powerful"
+ * - Larger 320×400 viewBox, detailed truck: wheel spokes, grille slats,
+ *   glass fills, headlight, door line, running board, bed stake pockets
+ * - Headlight beam (pulsing) + exhaust puffs (drifting right)
+ * - Dual outer breathing rings + faint "2" racing watermark
+ * - 150 motes + ground dust + 10 streaks + 8-point glimmers
  */
 
 import { useEffect, useRef } from 'react';
 
 export default function HeroAnimation() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const rafRef = useRef<number>(0);
+  const rafRef    = useRef<number>(0);
 
-  // Canvas: concentrated sparks + horizontal speed-line streaks
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -32,39 +26,53 @@ export default function HeroAnimation() {
     const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (REDUCED) return;
 
-    const sync = () => { canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight; };
+    const sync = () => {
+      canvas.width  = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
+    };
     sync();
     const ro = new ResizeObserver(sync);
     ro.observe(canvas);
 
-    // Motes — red sparks + white debris squares floating upward
-    const N = 90;
+    // ── Motes (red sparks + white debris squares, float upward)
+    const N = 150;
     const motes = Array.from({ length: N }, (_, i) => ({
-      x: Math.random() * 400,
-      y: Math.random() * 500,
-      r: 0.5 + Math.random() * 2,
-      vx: (Math.random() - 0.5) * 0.22,
-      vy: -(0.2 + Math.random() * 0.55),
-      op: 0,
-      tgt: 0.08 + Math.random() * 0.4,
+      x:   Math.random(),
+      y:   Math.random(),
+      r:   0.4 + Math.random() * 2.8,
+      vx:  (Math.random() - 0.5) * 0.0005,
+      vy:  -(0.0004 + Math.random() * 0.0012),
+      op:  0,
+      tgt: 0.08 + Math.random() * 0.48,
       red: i % 3 !== 2,
-      sq: i % 4 === 0,
+      sq:  i % 5 === 0,
       rot: Math.random() * Math.PI * 2,
-      rv: (Math.random() - 0.5) * 0.035,
+      rv:  (Math.random() - 0.5) * 0.038,
     }));
 
-    // Streaks — horizontal speed lines
-    const streaks = Array.from({ length: 5 }, () => ({
-      x: -150,
-      y: 40 + Math.random() * 420,
-      len: 50 + Math.random() * 110,
-      spd: 2 + Math.random() * 3.5,
-      op: 0,
-      phase: Math.random(),
+    // ── Ground dust (drifts left near base of truck)
+    const dust = Array.from({ length: 24 }, () => ({
+      x:   Math.random(),
+      y:   0.76 + Math.random() * 0.16,
+      r:   1.5 + Math.random() * 4,
+      vx:  -(0.0003 + Math.random() * 0.0008),
+      op:  0,
+      tgt: 0.025 + Math.random() * 0.08,
     }));
 
-    // Glimmers — 4-point star flashes
-    const glimmers: { x: number; y: number; sz: number; life: number; max: number }[] = [];
+    // ── Speed streaks
+    const streaks = Array.from({ length: 10 }, () => ({
+      x:   -0.3,
+      y:   0.12 + Math.random() * 0.72,
+      len: 0.18 + Math.random() * 0.30,
+      spd: 0.005 + Math.random() * 0.009,
+      w:   0.6  + Math.random() * 2.4,
+    }));
+
+    // ── Glimmers (4-point + 8-point stars)
+    const glimmers: {
+      x: number; y: number; sz: number; life: number; max: number; bright: boolean;
+    }[] = [];
     let gt = 0;
 
     function tick() {
@@ -72,22 +80,35 @@ export default function HeroAnimation() {
       const w = canvas.width, h = canvas.height;
       ctx.clearRect(0, 0, w, h);
 
+      // Dust
+      for (const d of dust) {
+        d.x += d.vx;
+        if (Math.random() < 0.003) d.tgt = 0.02 + Math.random() * 0.08;
+        d.op += (d.tgt - d.op) * 0.012;
+        if (d.x < -0.06) { d.x = 1.06; d.y = 0.74 + Math.random() * 0.18; }
+        ctx.save();
+        ctx.globalAlpha = d.op;
+        ctx.fillStyle = '#D72B2B';
+        ctx.beginPath(); ctx.arc(d.x * w, d.y * h, d.r, 0, Math.PI * 2); ctx.fill();
+        ctx.restore();
+      }
+
       // Motes
       for (const m of motes) {
         m.x += m.vx; m.y += m.vy; m.rot += m.rv;
-        if (Math.random() < 0.004) m.tgt = 0.06 + Math.random() * 0.4;
+        if (Math.random() < 0.004) m.tgt = 0.05 + Math.random() * 0.5;
         m.op += (m.tgt - m.op) * 0.02;
-        if (m.y < -6) { m.y = h + 4; m.x = Math.random() * w; }
-        if (m.x < -6) m.x = w + 4;
-        if (m.x > w + 6) m.x = -4;
+        if (m.y < -0.02) { m.y = 1.02; m.x = Math.random(); }
+        if (m.x < -0.02) m.x = 1.02;
+        if (m.x > 1.02)  m.x = -0.02;
         ctx.save();
         ctx.globalAlpha = m.op;
         ctx.fillStyle = m.red ? '#D72B2B' : '#F5F5F5';
         if (m.sq) {
-          ctx.translate(m.x, m.y); ctx.rotate(m.rot);
+          ctx.translate(m.x * w, m.y * h); ctx.rotate(m.rot);
           ctx.fillRect(-m.r, -m.r, m.r * 2, m.r * 2);
         } else {
-          ctx.beginPath(); ctx.arc(m.x, m.y, m.r, 0, Math.PI * 2); ctx.fill();
+          ctx.beginPath(); ctx.arc(m.x * w, m.y * h, m.r, 0, Math.PI * 2); ctx.fill();
         }
         ctx.restore();
       }
@@ -95,48 +116,68 @@ export default function HeroAnimation() {
       // Streaks
       for (const s of streaks) {
         s.x += s.spd;
-        if (s.x > w + 20) {
-          s.x = -s.len - 10;
-          s.y = 40 + Math.random() * (h - 80);
-          s.len = 50 + Math.random() * 110;
-          s.spd = 2 + Math.random() * 3.5;
+        if (s.x > 1.15) {
+          s.x = -s.len - 0.05;
+          s.y   = 0.12 + Math.random() * 0.72;
+          s.len = 0.18 + Math.random() * 0.30;
+          s.spd = 0.005 + Math.random() * 0.009;
         }
-        const mid = s.x + s.len / 2;
-        const fade = Math.max(0, 1 - Math.abs(mid - w / 2) / (w * 0.8));
+        const px   = s.x * w;
+        const plen = s.len * w;
+        const mid  = px + plen / 2;
+        const fade = Math.max(0, 1 - Math.abs(mid - w * 0.35) / (w * 0.75));
         ctx.save();
-        ctx.globalAlpha = fade * 0.32;
-        const g = ctx.createLinearGradient(s.x, s.y, s.x + s.len, s.y);
-        g.addColorStop(0, 'transparent');
-        g.addColorStop(0.35, '#D72B2B');
-        g.addColorStop(1, 'transparent');
+        ctx.globalAlpha = fade * 0.44;
+        const g = ctx.createLinearGradient(px, s.y * h, px + plen, s.y * h);
+        g.addColorStop(0,    'transparent');
+        g.addColorStop(0.38, '#D72B2B');
+        g.addColorStop(1,    'transparent');
         ctx.strokeStyle = g;
-        ctx.lineWidth = 0.8;
-        ctx.beginPath(); ctx.moveTo(s.x, s.y); ctx.lineTo(s.x + s.len, s.y); ctx.stroke();
+        ctx.lineWidth = s.w;
+        ctx.beginPath(); ctx.moveTo(px, s.y * h); ctx.lineTo(px + plen, s.y * h); ctx.stroke();
         ctx.restore();
       }
 
       // Glimmers
       gt++;
-      if (gt > 50 && glimmers.length < 4) {
-        glimmers.push({ x: 20 + Math.random() * (w - 40), y: 20 + Math.random() * (h - 40), sz: 3 + Math.random() * 5, life: 0, max: 40 + Math.random() * 30 });
+      if (gt > 28 && glimmers.length < 8) {
+        glimmers.push({
+          x:      12 + Math.random() * (w - 24),
+          y:      12 + Math.random() * (h * 0.87 - 24),
+          sz:     3.5 + Math.random() * 8.5,
+          life:   0,
+          max:    42 + Math.random() * 42,
+          bright: Math.random() > 0.62,
+        });
         gt = 0;
       }
       for (let i = glimmers.length - 1; i >= 0; i--) {
         const gl = glimmers[i];
         gl.life++;
         const p = gl.life / gl.max;
-        const f = p < 0.3 ? p / 0.3 : 1 - (p - 0.3) / 0.7;
+        const f = p < 0.28 ? p / 0.28 : 1 - (p - 0.28) / 0.72;
         const s = gl.sz * f;
         ctx.save();
         ctx.translate(gl.x, gl.y);
-        ctx.globalAlpha = f * 0.8;
-        ctx.strokeStyle = '#D72B2B'; ctx.lineWidth = 1;
+        // 4-point star
+        ctx.globalAlpha = f * (gl.bright ? 1.0 : 0.7);
+        ctx.strokeStyle = '#D72B2B'; ctx.lineWidth = 1.3;
         ctx.beginPath();
-        ctx.moveTo(0, -s * 2); ctx.lineTo(0, s * 2);
-        ctx.moveTo(-s * 2, 0); ctx.lineTo(s * 2, 0);
+        ctx.moveTo(0, -s * 2.5); ctx.lineTo(0, s * 2.5);
+        ctx.moveTo(-s * 2.5, 0); ctx.lineTo(s * 2.5, 0);
         ctx.stroke();
+        // diagonal cross (8-point for bright glimmers)
+        if (gl.bright) {
+          ctx.globalAlpha = f * 0.42;
+          ctx.strokeStyle = 'rgba(215,43,43,0.5)'; ctx.lineWidth = 0.8;
+          ctx.beginPath();
+          ctx.moveTo(-s * 1.7, -s * 1.7); ctx.lineTo( s * 1.7,  s * 1.7);
+          ctx.moveTo( s * 1.7, -s * 1.7); ctx.lineTo(-s * 1.7,  s * 1.7);
+          ctx.stroke();
+        }
+        ctx.globalAlpha = f * (gl.bright ? 1 : 0.85);
         ctx.fillStyle = '#ffffff';
-        ctx.beginPath(); ctx.arc(0, 0, s * 0.35, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.arc(0, 0, s * 0.44, 0, Math.PI * 2); ctx.fill();
         ctx.restore();
         if (gl.life >= gl.max) glimmers.splice(i, 1);
       }
@@ -145,195 +186,377 @@ export default function HeroAnimation() {
     }
 
     rafRef.current = requestAnimationFrame(tick);
-    const onVis = () => { if (document.hidden) cancelAnimationFrame(rafRef.current); else rafRef.current = requestAnimationFrame(tick); };
+    const onVis = () => {
+      if (document.hidden) cancelAnimationFrame(rafRef.current);
+      else rafRef.current = requestAnimationFrame(tick);
+    };
     document.addEventListener('visibilitychange', onVis);
-    return () => { cancelAnimationFrame(rafRef.current); ro.disconnect(); document.removeEventListener('visibilitychange', onVis); };
+    return () => {
+      cancelAnimationFrame(rafRef.current);
+      ro.disconnect();
+      document.removeEventListener('visibilitychange', onVis);
+    };
   }, []);
 
   return (
-    <div className="relative w-full" style={{ aspectRatio: '4/5', maxWidth: '420px' }} aria-hidden="true">
-
-      {/* Canvas layer — sparks + streaks */}
+    <div
+      className="relative w-full"
+      style={{ aspectRatio: '4/5', maxWidth: '520px' }}
+      aria-hidden="true"
+    >
+      {/* Canvas layer — motes, streaks, dust, glimmers */}
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
 
-      {/* SVG — self-drawing truck + speed lines + tagline */}
+      {/* SVG layer — self-drawing detailed truck */}
       <svg
         className="absolute inset-0 w-full h-full"
-        viewBox="0 0 240 300"
+        viewBox="0 0 320 400"
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
       >
         <defs>
           <style>{`
-            /* ── Truck body draws itself ── */
+            /* ── Draw animations ── */
             @keyframes w2-draw {
-              from { stroke-dashoffset: 560; opacity: 1; }
+              from { stroke-dashoffset: 600; opacity: 1; }
               to   { stroke-dashoffset: 0;   opacity: 1; }
             }
-            /* ── Wheel circles draw ── */
-            @keyframes w2-wheel {
-              from { stroke-dashoffset: 185; }
-              to   { stroke-dashoffset: 0; }
+            @keyframes w2-whl {
+              from { stroke-dashoffset: 240; }
+              to   { stroke-dashoffset: 0;   }
             }
-            /* ── Elements fade + rise in ── */
+            @keyframes w2-spk {
+              from { stroke-dashoffset: 50; }
+              to   { stroke-dashoffset: 0;  }
+            }
             @keyframes w2-rise {
-              from { opacity: 0; transform: translateY(6px); }
-              to   { opacity: 1; transform: translateY(0); }
+              from { opacity: 0; transform: translateY(8px); }
+              to   { opacity: 1; transform: translateY(0);   }
             }
-            /* ── Hub cap pop ── */
             @keyframes w2-pop {
-              0%   { transform: scale(0); opacity: 0; }
-              70%  { transform: scale(1.25); opacity: 1; }
-              100% { transform: scale(1);  opacity: 1; }
+              0%   { transform: scale(0);    opacity: 0; }
+              68%  { transform: scale(1.28); opacity: 1; }
+              100% { transform: scale(1);    opacity: 1; }
             }
-            /* ── Glow ring breathe (infinite after draw) ── */
             @keyframes w2-breathe {
-              0%, 100% { opacity: 0.12; r: 72; }
-              50%       { opacity: 0.28; r: 80; }
+              0%, 100% { opacity: 0.06; }
+              50%       { opacity: 0.22; }
             }
-            /* ── Speed lines loop ── */
             @keyframes w2-streak {
-              0%   { stroke-dashoffset: 90;  opacity: 0; }
-              20%  { opacity: 0.85; }
-              80%  { opacity: 0.55; }
-              100% { stroke-dashoffset: -15; opacity: 0; }
+              0%   { stroke-dashoffset: 120; opacity: 0;   }
+              18%  { opacity: 0.95; }
+              82%  { opacity: 0.6;  }
+              100% { stroke-dashoffset: -18; opacity: 0;   }
+            }
+            @keyframes w2-hlight {
+              0%, 100% { opacity: 0.5;  }
+              50%       { opacity: 0.85; }
+            }
+            @keyframes w2-exhaust {
+              0%   { opacity: 0;    transform: translateX(0)    scale(0.4); }
+              35%  { opacity: 0.45; }
+              100% { opacity: 0;    transform: translateX(24px) scale(2.4); }
             }
 
-            .w2-body   { stroke-dasharray: 560; stroke-dashoffset: 560; opacity: 0;
-                         animation: w2-draw 1.9s cubic-bezier(0.4,0,0.2,1) 0.35s forwards; }
-            .w2-wheel  { stroke-dasharray: 185; stroke-dashoffset: 185;
-                         animation: w2-wheel 0.7s ease-out 2.0s forwards; }
-            .w2-wheel2 { stroke-dasharray: 185; stroke-dashoffset: 185;
-                         animation: w2-wheel 0.7s ease-out 2.1s forwards; }
-            .w2-hub    { transform-origin: 72px 218px;
-                         animation: w2-pop 0.35s cubic-bezier(0.34,1.56,0.64,1) 2.5s both; }
-            .w2-hub2   { transform-origin: 168px 218px;
-                         animation: w2-pop 0.35s cubic-bezier(0.34,1.56,0.64,1) 2.6s both; }
-            .w2-glass  { animation: w2-rise 0.5s ease-out 1.85s both; }
-            .w2-debris { animation: w2-rise 0.6s ease-out 2.05s both; }
-            .w2-tag    { animation: w2-rise 0.8s ease-out 2.85s both; }
-            .w2-glow   { animation: w2-breathe 3s ease-in-out 3.1s infinite; }
+            /* ── Applied classes ── */
+            .w2-body {
+              stroke-dasharray: 600; stroke-dashoffset: 600; opacity: 0;
+              animation: w2-draw 2.1s cubic-bezier(0.4,0,0.2,1) 0.3s forwards;
+            }
+            .w2-whl {
+              stroke-dasharray: 240; stroke-dashoffset: 240;
+              animation: w2-whl 0.85s ease-out 2.2s forwards;
+            }
+            .w2-whl2 {
+              stroke-dasharray: 240; stroke-dashoffset: 240;
+              animation: w2-whl 0.85s ease-out 2.35s forwards;
+            }
+            .w2-spk {
+              stroke-dasharray: 50; stroke-dashoffset: 50;
+              animation: w2-spk 0.42s ease-out 2.85s forwards;
+            }
+            .w2-spk2 {
+              stroke-dasharray: 50; stroke-dashoffset: 50;
+              animation: w2-spk 0.42s ease-out 2.92s forwards;
+            }
+            .w2-hub {
+              transform-box: fill-box; transform-origin: center;
+              animation: w2-pop 0.4s cubic-bezier(0.34,1.56,0.64,1) 3.1s both;
+            }
+            .w2-hub2 {
+              transform-box: fill-box; transform-origin: center;
+              animation: w2-pop 0.4s cubic-bezier(0.34,1.56,0.64,1) 3.2s both;
+            }
+            .w2-glass {
+              animation: w2-rise 0.6s ease-out 2.1s both;
+            }
+            .w2-det {
+              animation: w2-rise 0.5s ease-out 2.45s both;
+            }
+            .w2-bed {
+              animation: w2-rise 0.5s ease-out 2.6s both;
+            }
+            .w2-dbr {
+              animation: w2-rise 0.7s ease-out 2.72s both;
+            }
+            .w2-tag {
+              animation: w2-rise 0.9s ease-out 3.25s both;
+            }
+            .w2-glow {
+              animation: w2-breathe 3.8s ease-in-out 3.3s infinite;
+            }
+            .w2-hl {
+              animation: w2-hlight 2.4s ease-in-out 3.0s infinite;
+            }
+            .w2-ex1 {
+              transform-box: fill-box; transform-origin: center;
+              animation: w2-exhaust 1.6s ease-out 3.05s infinite;
+            }
+            .w2-ex2 {
+              transform-box: fill-box; transform-origin: center;
+              animation: w2-exhaust 1.6s ease-out 3.42s infinite;
+            }
+            .w2-ex3 {
+              transform-box: fill-box; transform-origin: center;
+              animation: w2-exhaust 1.6s ease-out 3.78s infinite;
+            }
 
-            .w2-sl1 { stroke-dasharray: 70;
-                      animation: w2-streak 2.0s ease-in-out infinite; }
-            .w2-sl2 { stroke-dasharray: 48;
-                      animation: w2-streak 2.0s ease-in-out 0.28s infinite; }
-            .w2-sl3 { stroke-dasharray: 85;
-                      animation: w2-streak 2.0s ease-in-out 0.14s infinite; }
+            .w2-sl1 { stroke-dasharray: 115; animation: w2-streak 2.1s ease-in-out          infinite; }
+            .w2-sl2 { stroke-dasharray: 76;  animation: w2-streak 2.1s ease-in-out 0.30s    infinite; }
+            .w2-sl3 { stroke-dasharray: 130; animation: w2-streak 2.1s ease-in-out 0.16s    infinite; }
+            .w2-sl4 { stroke-dasharray: 58;  animation: w2-streak 2.1s ease-in-out 0.46s    infinite; }
           `}</style>
 
-          {/* Clipping mask so glow stays inside */}
-          <radialGradient id="glow-grad" cx="50%" cy="74%" r="38%">
-            <stop offset="0%" stopColor="#D72B2B" stopOpacity="0.22" />
-            <stop offset="100%" stopColor="#D72B2B" stopOpacity="0" />
+          {/* Radial glow beneath truck */}
+          <radialGradient id="rg-truck-glow" cx="46%" cy="80%" r="52%">
+            <stop offset="0%"   stopColor="#D72B2B" stopOpacity="0.45" />
+            <stop offset="48%"  stopColor="#D72B2B" stopOpacity="0.14" />
+            <stop offset="100%" stopColor="#D72B2B" stopOpacity="0"    />
           </radialGradient>
         </defs>
 
-        {/* ── Ambient glow underneath truck ── */}
-        <ellipse cx="120" cy="230" rx="90" ry="18" fill="url(#glow-grad)" opacity="0.4" />
+        {/* ── Ambient glow pool under truck ── */}
+        <ellipse cx="162" cy="316" rx="158" ry="20" fill="url(#rg-truck-glow)" />
 
-        {/* ── Speed lines (left side, looping) ── */}
-        <line className="w2-sl1" x1="8"  y1="88"  x2="78"  y2="88"  stroke="#D72B2B" strokeWidth="2.8" strokeLinecap="round" />
-        <line className="w2-sl3" x1="8"  y1="96"  x2="92"  y2="96"  stroke="#D72B2B" strokeWidth="1.2" strokeLinecap="round" />
-        <line className="w2-sl2" x1="8"  y1="103" x2="62"  y2="103" stroke="#D72B2B" strokeWidth="0.7" strokeLinecap="round" />
+        {/* ── Outer breathing rings ── */}
+        <circle className="w2-glow" cx="162" cy="248" r="136" stroke="#D72B2B" strokeWidth="0.55" />
+        <circle className="w2-glow" cx="162" cy="248" r="108" stroke="#D72B2B" strokeWidth="0.3"
+          style={{ animationDelay: '0.45s' }} />
 
-        {/* ── Three stars (right of speed lines) ── */}
-        <text x="100" y="101" fontSize="9" fill="white" textAnchor="middle" opacity="0.7">★</text>
-        <text x="113" y="101" fontSize="9" fill="white" textAnchor="middle" opacity="0.7">★</text>
-        <text x="126" y="101" fontSize="9" fill="white" textAnchor="middle" opacity="0.7">★</text>
+        {/* ── Headlight beam (cone left) ── */}
+        <path
+          className="w2-hl"
+          d="M 48 224 L 0 196 L 0 255 Z"
+          fill="rgba(255,140,140,0.1)"
+          opacity="0"
+        />
 
-        {/* ── Truck body — single continuous path, draws itself ── */}
-        {/*
-          Side profile:
-          front bumper → up front face → step to hood → up hood edge →
-          across hood → up windshield → roof → rear window →
-          cab back → step UP to bed → bed top → tailgate bottom
-        */}
+        {/* ── Speed lines ── */}
+        <line className="w2-sl1" x1="6"  y1="120" x2="118" y2="120" stroke="#D72B2B" strokeWidth="3.6" strokeLinecap="round" />
+        <line className="w2-sl3" x1="6"  y1="131" x2="132" y2="131" stroke="#D72B2B" strokeWidth="1.5" strokeLinecap="round" />
+        <line className="w2-sl2" x1="6"  y1="140" x2="96"  y2="140" stroke="#D72B2B" strokeWidth="0.9" strokeLinecap="round" />
+        <line className="w2-sl4" x1="6"  y1="148" x2="108" y2="148" stroke="#D72B2B" strokeWidth="0.5" strokeLinecap="round" />
+
+        {/* ── Stars ── */}
+        <text x="146" y="135" fontSize="11" fill="white" textAnchor="middle" opacity="0.58">★</text>
+        <text x="162" y="135" fontSize="11" fill="white" textAnchor="middle" opacity="0.58">★</text>
+        <text x="178" y="135" fontSize="11" fill="white" textAnchor="middle" opacity="0.58">★</text>
+
+        {/* ── Racing number watermark ── */}
+        <text
+          x="172" y="312"
+          fontSize="220" fontWeight="900"
+          fontFamily="'Barlow Condensed','Arial Narrow',sans-serif"
+          fill="#D72B2B" textAnchor="middle" opacity="0.028"
+        >2</text>
+
+        {/* ── Exhaust puffs (drift right from rear of truck) ── */}
+        <circle className="w2-ex1" cx="292" cy="302" r="7"   fill="rgba(215,43,43,0.25)" />
+        <circle className="w2-ex2" cx="291" cy="297" r="5"   fill="rgba(245,245,245,0.18)" />
+        <circle className="w2-ex3" cx="293" cy="305" r="8.5" fill="rgba(215,43,43,0.18)" />
+
+        {/*═══════════════════════════════════════════════════════
+          TRUCK BODY — detailed pickup side profile
+          Ground:  y = 315
+          Wheels:  front  cx=90  cy=277  r=38
+                   rear   cx=230 cy=277  r=38
+        ═══════════════════════════════════════════════════════*/}
         <path
           className="w2-body"
           d="
-            M 28 230
-            L 28 195
-            L 40 195
-            L 40 155
-            L 62 155
-            L 88 118
-            L 140 115
-            L 144 140
-            L 144 195
-            L 144 172
-            L 212 172
-            L 212 230
+            M 42 315
+            L 42 268
+            L 56 268
+            L 56 235
+            L 65 220
+            L 75 208
+            L 120 192
+            L 126 190
+            L 148 152
+            L 208 148
+            L 232 152
+            L 238 180
+            L 244 200
+            L 258 190
+            L 258 172
+            L 292 172
+            L 292 315
           "
           stroke="#D72B2B"
-          strokeWidth="3"
+          strokeWidth="3.2"
           strokeLinecap="round"
           strokeLinejoin="round"
         />
 
-        {/* ── Windshield (glass fill) ── */}
+        {/* ── Windshield glass fill ── */}
         <path
           className="w2-glass"
-          d="M 46 154 L 66 128 L 102 125 L 102 154 Z"
-          fill="rgba(215,43,43,0.12)"
+          d="M 126 190 L 148 152 L 208 148 L 208 190 Z"
+          fill="rgba(215,43,43,0.1)"
           stroke="#D72B2B"
           strokeWidth="1.2"
           opacity="0"
         />
 
-        {/* ── Bed interior line ── */}
-        <line
+        {/* ── Rear window glass fill ── */}
+        <path
           className="w2-glass"
-          x1="144" y1="185" x2="212" y2="185"
-          stroke="#D72B2B" strokeWidth="1" opacity="0"
-          style={{ animationDelay: '2.0s' }}
+          d="M 208 148 L 232 152 L 238 180 L 244 200 L 208 200 Z"
+          fill="rgba(215,43,43,0.07)"
+          stroke="#D72B2B"
+          strokeWidth="1"
+          opacity="0"
+          style={{ animationDelay: '2.2s' }}
         />
 
+        {/* ── Headlight rectangle ── */}
+        <rect
+          className="w2-det"
+          x="43" y="218" width="13" height="11" rx="1.5"
+          stroke="#D72B2B" strokeWidth="1.2"
+          fill="rgba(255,200,200,0.2)"
+          opacity="0"
+        />
+
+        {/* ── Grille vertical slats ── */}
+        <g className="w2-det" opacity="0">
+          <line x1="58"   y1="238" x2="58"   y2="265" stroke="rgba(215,43,43,0.55)" strokeWidth="0.9" />
+          <line x1="61.5" y1="238" x2="61.5" y2="265" stroke="rgba(215,43,43,0.55)" strokeWidth="0.9" />
+          <line x1="65"   y1="238" x2="65"   y2="265" stroke="rgba(215,43,43,0.55)" strokeWidth="0.9" />
+          <line x1="68.5" y1="238" x2="68.5" y2="265" stroke="rgba(215,43,43,0.55)" strokeWidth="0.9" />
+        </g>
+
+        {/* ── Door panel line + handle ── */}
+        <g className="w2-det" opacity="0">
+          <line x1="150" y1="202" x2="244" y2="202"
+            stroke="rgba(215,43,43,0.38)" strokeWidth="0.9" />
+          <rect x="186" y="197" width="16" height="4" rx="2"
+            stroke="rgba(215,43,43,0.52)" strokeWidth="0.9" fill="none" />
+        </g>
+
+        {/* ── Running board ── */}
+        <line
+          className="w2-det"
+          x1="118" y1="234" x2="244" y2="234"
+          stroke="rgba(215,43,43,0.28)" strokeWidth="2"
+          opacity="0"
+        />
+
+        {/* ── Bed stake pockets + floor line ── */}
+        <g className="w2-bed" opacity="0">
+          <line x1="260" y1="215" x2="290" y2="215" stroke="rgba(215,43,43,0.32)" strokeWidth="1" />
+          <line x1="266" y1="172" x2="266" y2="188" stroke="rgba(215,43,43,0.44)" strokeWidth="1.2" />
+          <line x1="276" y1="172" x2="276" y2="188" stroke="rgba(215,43,43,0.44)" strokeWidth="1.2" />
+          <line x1="286" y1="172" x2="286" y2="188" stroke="rgba(215,43,43,0.44)" strokeWidth="1.2" />
+        </g>
+
         {/* ── Debris in truck bed ── */}
-        <g className="w2-debris" opacity="0">
-          <rect x="152" y="153" width="10" height="14" stroke="rgba(245,245,245,0.55)" strokeWidth="1.2" fill="none" transform="rotate(12, 157, 160)" />
-          <rect x="168" y="150" width="8"  height="10" stroke="rgba(245,245,245,0.45)" strokeWidth="1"   fill="none" transform="rotate(-8, 172, 155)" />
-          <rect x="183" y="154" width="12" height="9"  stroke="rgba(245,245,245,0.38)" strokeWidth="1"   fill="none" transform="rotate(5, 189, 158)" />
-          <rect x="160" y="142" width="7"  height="8"  stroke="rgba(215,43,43,0.6)"   strokeWidth="1"   fill="none" transform="rotate(-15, 163, 146)" />
+        <g className="w2-dbr" opacity="0">
+          <rect x="263" y="177" width="12" height="16" rx="0.5"
+            stroke="rgba(245,245,245,0.52)" strokeWidth="1.2" fill="none"
+            transform="rotate(13,269,185)" />
+          <rect x="277" y="175" width="9"  height="13" rx="0.5"
+            stroke="rgba(245,245,245,0.42)" strokeWidth="1.1" fill="none"
+            transform="rotate(-8,281,181)" />
+          <rect x="266" y="163" width="8"  height="10" rx="0.5"
+            stroke="rgba(215,43,43,0.6)"   strokeWidth="1"   fill="none"
+            transform="rotate(-17,270,168)" />
+          <rect x="280" y="163" width="11" height="12" rx="0.5"
+            stroke="rgba(245,245,245,0.36)" strokeWidth="1"   fill="none"
+            transform="rotate(6,285,169)" />
         </g>
 
-        {/* ── Front wheel ── */}
-        <circle className="w2-wheel"  cx="72"  cy="218" r="28" stroke="#D72B2B" strokeWidth="2.5" />
-        <circle className="w2-wheel"  cx="72"  cy="218" r="18" stroke="rgba(215,43,43,0.4)" strokeWidth="1" />
+        {/* ══ FRONT WHEEL ══ */}
+        <circle className="w2-whl"  cx="90" cy="277" r="38" stroke="#D72B2B" strokeWidth="2.8" />
+        <circle className="w2-whl"  cx="90" cy="277" r="26" stroke="rgba(215,43,43,0.35)" strokeWidth="1.2" />
+        {/* 4-spoke cross + diagonal cross */}
+        <line className="w2-spk" x1="90"  y1="253" x2="90"  y2="301" stroke="#D72B2B" strokeWidth="1.3" />
+        <line className="w2-spk" x1="66"  y1="277" x2="114" y2="277" stroke="#D72B2B" strokeWidth="1.3" />
+        <line className="w2-spk" x1="73"  y1="260" x2="107" y2="294" stroke="#D72B2B" strokeWidth="1" strokeOpacity="0.55" />
+        <line className="w2-spk" x1="107" y1="260" x2="73"  y2="294" stroke="#D72B2B" strokeWidth="1" strokeOpacity="0.55" />
         <g className="w2-hub">
-          <circle cx="72" cy="218" r="7" fill="#D72B2B" opacity="0" />
+          <circle cx="90" cy="277" r="9"   fill="#D72B2B" />
+          <circle cx="90" cy="277" r="4.5" fill="#0d0d0d" />
         </g>
 
-        {/* ── Rear wheel ── */}
-        <circle className="w2-wheel2" cx="168" cy="218" r="28" stroke="#D72B2B" strokeWidth="2.5" />
-        <circle className="w2-wheel2" cx="168" cy="218" r="18" stroke="rgba(215,43,43,0.4)" strokeWidth="1" />
+        {/* ══ REAR WHEEL ══ */}
+        <circle className="w2-whl2" cx="230" cy="277" r="38" stroke="#D72B2B" strokeWidth="2.8" />
+        <circle className="w2-whl2" cx="230" cy="277" r="26" stroke="rgba(215,43,43,0.35)" strokeWidth="1.2" />
+        {/* 4-spoke cross + diagonal cross */}
+        <line className="w2-spk2" x1="230" y1="253" x2="230" y2="301" stroke="#D72B2B" strokeWidth="1.3" />
+        <line className="w2-spk2" x1="206" y1="277" x2="254" y2="277" stroke="#D72B2B" strokeWidth="1.3" />
+        <line className="w2-spk2" x1="213" y1="260" x2="247" y2="294" stroke="#D72B2B" strokeWidth="1" strokeOpacity="0.55" />
+        <line className="w2-spk2" x1="247" y1="260" x2="213" y2="294" stroke="#D72B2B" strokeWidth="1" strokeOpacity="0.55" />
         <g className="w2-hub2">
-          <circle cx="168" cy="218" r="7" fill="#D72B2B" opacity="0" />
+          <circle cx="230" cy="277" r="9"   fill="#D72B2B" />
+          <circle cx="230" cy="277" r="4.5" fill="#0d0d0d" />
         </g>
-
-        {/* ── Glow ring — breathes after draw completes ── */}
-        <circle className="w2-glow" cx="120" cy="185" r="72" stroke="#D72B2B" strokeWidth="0.8" opacity="0" />
 
         {/* ── Ground line ── */}
         <line
           className="w2-tag"
-          x1="18" y1="248" x2="222" y2="248"
-          stroke="rgba(215,43,43,0.3)" strokeWidth="0.8" opacity="0"
+          x1="18" y1="318" x2="302" y2="318"
+          stroke="rgba(215,43,43,0.25)" strokeWidth="0.8"
+          opacity="0"
+        />
+
+        {/* ── Ground reflection haze ── */}
+        <ellipse
+          className="w2-tag"
+          cx="165" cy="323" rx="138" ry="5.5"
+          fill="rgba(215,43,43,0.05)"
+          opacity="0"
         />
 
         {/* ── Tagline ── */}
         <text
           className="w2-tag"
-          x="120" y="266"
-          fontSize="10"
+          x="162" y="342"
+          fontSize="12"
           fontWeight="700"
-          fontFamily="'Barlow Condensed', 'Arial Narrow', sans-serif"
+          fontFamily="'Barlow Condensed','Arial Narrow',sans-serif"
           fill="#D72B2B"
           textAnchor="middle"
-          letterSpacing="3.5"
+          letterSpacing="4.2"
           opacity="0"
         >
           YOU POINT, WE HAUL
+        </text>
+
+        {/* ── URL sub-tagline ── */}
+        <text
+          className="w2-tag"
+          x="162" y="358"
+          fontSize="7.5"
+          fontWeight="400"
+          fontFamily="'Barlow Condensed','Arial Narrow',sans-serif"
+          fill="rgba(215,43,43,0.45)"
+          textAnchor="middle"
+          letterSpacing="5.5"
+          opacity="0"
+          style={{ animationDelay: '3.35s' }}
+        >
+          WHERE2JUNK.COM
         </text>
       </svg>
     </div>
