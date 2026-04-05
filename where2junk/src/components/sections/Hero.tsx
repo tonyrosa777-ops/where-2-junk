@@ -4,8 +4,8 @@
 // Animation: SVG Lightning Bolts + CSS speed lines + pulse rings
 // All copy sourced from siteData.hero — zero hard-coded strings.
 
-import Image from 'next/image';
 import HeroEffects from './HeroEffects';
+import HeroAnimation from './HeroAnimation';
 import Button from '@/components/ui/Button';
 import Badge from '@/components/ui/Badge';
 import { siteData } from '@/data/site';
@@ -99,24 +99,9 @@ export default function Hero() {
               </p>
             </div>
 
-            {/* ── Right column: owner photo — hidden on mobile ── */}
+            {/* ── Right column: custom JS animation ── */}
             <div className="hidden lg:flex items-center justify-center">
-              <div
-                className="relative w-full max-w-[400px] overflow-hidden"
-                style={{
-                  aspectRatio: '4/5',
-                  border: '2px solid var(--primary-muted)',
-                }}
-              >
-                <Image
-                  src="/images/hero-owner.jpg"
-                  alt="Where2 Junk Removal — Manchester, NH crew"
-                  fill
-                  className="object-cover object-top"
-                  priority
-                  sizes="400px"
-                />
-              </div>
+              <HeroAnimation />
             </div>
 
           </div>
