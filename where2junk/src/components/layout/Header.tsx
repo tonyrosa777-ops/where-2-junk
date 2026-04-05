@@ -2,22 +2,17 @@
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Phone, ChevronDown, Menu, AlignJustify } from 'lucide-react';
+import { Phone, ChevronDown, Menu } from 'lucide-react';
 import { siteData } from '@/data/site';
 import MobileNav from './MobileNav';
 
-// Links always visible in desktop nav (conversion-focused)
-const PRIMARY = new Set(['Services', 'About', 'Contact']);
-// Links hidden from desktop nav entirely (not in primary or hamburger)
-const HIDDEN  = new Set(['Service Areas', 'Blog']);
-
 export default function Header() {
-  const [scrolled, setScrolled]         = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
-  const [moreOpen, setMoreOpen]         = useState(false);
-  const [mobileOpen, setMobileOpen]     = useState(false);
-  const servicesRef = useRef<HTMLDivElement>(null);
-  const moreRef     = useRef<HTMLDivElement>(null);
+  const [areasOpen, setAreasOpen] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const areasDropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -27,17 +22,16 @@ export default function Header() {
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
-      if (servicesRef.current && !servicesRef.current.contains(e.target as Node))
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
         setServicesOpen(false);
-      if (moreRef.current && !moreRef.current.contains(e.target as Node))
-        setMoreOpen(false);
+      }
+      if (areasDropdownRef.current && !areasDropdownRef.current.contains(e.target as Node)) {
+        setAreasOpen(false);
+      }
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
-
-  const primaryLinks = siteData.nav.links.filter(l => PRIMARY.has(l.label));
-  const moreLinks    = siteData.nav.links.filter(l => !PRIMARY.has(l.label) && !HIDDEN.has(l.label));
 
   return (
     <>
@@ -57,19 +51,33 @@ export default function Header() {
           <div className="flex items-center justify-between">
 
             {/* Logo */}
-            <Link href="/" className="flex items-baseline gap-0 select-none flex-shrink-0">
-              <span className="font-display font-black uppercase text-xl tracking-tight leading-none" style={{ color: 'var(--text-primary)' }}>WHERE</span>
-              <span className="font-display font-black uppercase text-xl tracking-tight leading-none" style={{ color: 'var(--primary)' }}>2</span>
-              <span className="font-display font-black uppercase text-xl tracking-tight leading-none ml-1" style={{ color: 'var(--text-primary)' }}>JUNK</span>
+            <Link href="/" className="flex items-baseline gap-0 select-none">
+              <span
+                className="font-display font-black uppercase text-xl tracking-tight leading-none"
+                style={{ color: 'var(--text-primary)' }}
+              >
+                WHERE
+              </span>
+              <span
+                className="font-display font-black uppercase text-xl tracking-tight leading-none"
+                style={{ color: 'var(--primary)' }}
+              >
+                2
+              </span>
+              <span
+                className="font-display font-black uppercase text-xl tracking-tight leading-none ml-1"
+                style={{ color: 'var(--text-primary)' }}
+              >
+                JUNK
+              </span>
             </Link>
 
-            {/* ── Desktop Nav ── */}
+            {/* Desktop Nav */}
             <nav className="hidden lg:flex items-center gap-1">
-
-              {primaryLinks.map((link) => {
+              {siteData.nav.links.map((link) => {
                 if (link.label === 'Services') {
                   return (
-                    <div key={link.href} ref={servicesRef} className="relative">
+                    <div key={link.href} ref={dropdownRef} className="relative">
                       <button
                         onClick={() => setServicesOpen(!servicesOpen)}
                         className="flex items-center gap-1 px-3 py-2 transition-colors font-display font-black uppercase text-sm tracking-widest"
@@ -80,7 +88,10 @@ export default function Header() {
                         }}
                       >
                         {link.label}
-                        <ChevronDown size={13} className={`transition-transform duration-200 ${servicesOpen ? 'rotate-180' : ''}`} />
+                        <ChevronDown
+                          size={13}
+                          className={`transition-transform duration-200 ${servicesOpen ? 'rotate-180' : ''}`}
+                        />
                       </button>
 
                       <AnimatePresence>
@@ -91,9 +102,15 @@ export default function Header() {
                             exit={{ opacity: 0, y: 8, scale: 0.97 }}
                             transition={{ duration: 0.15 }}
                             className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-64 z-50 border"
-                            style={{ background: 'var(--bg-card)', borderColor: 'var(--primary-muted)' }}
+                            style={{
+                              background: 'var(--bg-card)',
+                              borderColor: 'var(--primary-muted)',
+                            }}
                           >
-                            <p className="px-4 pt-4 pb-2 font-mono text-xs uppercase tracking-widest" style={{ color: 'var(--text-muted)' }}>
+                            <p
+                              className="px-4 pt-4 pb-2 font-mono text-xs uppercase tracking-widest"
+                              style={{ color: 'var(--text-muted)' }}
+                            >
                               All Services
                             </p>
                             <div className="pb-2">
@@ -102,6 +119,97 @@ export default function Header() {
                                   key={service.slug}
                                   href={`/services/${service.slug}`}
                                   onClick={() => setServicesOpen(false)}
+                                  className="flex items-center gap-2 px-4 py-2.5 transition-colors group"
+                                  style={{ color: 'var(--text-secondary)' }}
+                                  onMouseEnter={(e) => {
+                                    const el = e.currentTarget as HTMLElement;
+                                    el.style.color = 'var(--text-primary)';
+                                    el.style.background = 'rgba(215,43,43,0.08)';
+                                  }}
+                                  onMouseLeave={(e) => {
+                                    const el = e.currentTarget as HTMLElement;
+                                    el.style.color = 'var(--text-secondary)';
+                                    el.style.background = 'transparent';
+                                  }}
+                                >
+                                  <span
+                                    className="w-1.5 h-1.5 flex-shrink-0"
+                                    style={{ background: 'var(--primary)' }}
+                                  />
+                                  <span className="font-body text-sm">{service.shortTitle}</span>
+                                </Link>
+                              ))}
+                            </div>
+                            <div
+                              className="border-t px-4 py-3"
+                              style={{ borderColor: 'rgba(245,245,245,0.08)' }}
+                            >
+                              <Link
+                                href="/services"
+                                onClick={() => setServicesOpen(false)}
+                                className="font-display font-black uppercase text-xs tracking-widest transition-colors"
+                                style={{ color: 'var(--primary)' }}
+                                onMouseEnter={(e) =>
+                                  ((e.currentTarget as HTMLElement).style.color = 'var(--accent)')
+                                }
+                                onMouseLeave={(e) =>
+                                  ((e.currentTarget as HTMLElement).style.color = 'var(--primary)')
+                                }
+                              >
+                                View All Services →
+                              </Link>
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  );
+                }
+
+                if (link.label === 'Service Areas') {
+                  return (
+                    <div key={link.href} ref={areasDropdownRef} className="relative">
+                      <button
+                        onClick={() => setAreasOpen(!areasOpen)}
+                        className="flex items-center gap-1 px-3 py-2 transition-colors font-display font-black uppercase text-sm tracking-widest"
+                        style={{ color: areasOpen ? 'var(--text-primary)' : 'var(--text-secondary)' }}
+                        onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--text-primary)')}
+                        onMouseLeave={(e) => {
+                          if (!areasOpen) e.currentTarget.style.color = 'var(--text-secondary)';
+                        }}
+                      >
+                        {link.label}
+                        <ChevronDown
+                          size={13}
+                          className={`transition-transform duration-200 ${areasOpen ? 'rotate-180' : ''}`}
+                        />
+                      </button>
+
+                      <AnimatePresence>
+                        {areasOpen && (
+                          <motion.div
+                            initial={{ opacity: 0, y: 8, scale: 0.97 }}
+                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                            exit={{ opacity: 0, y: 8, scale: 0.97 }}
+                            transition={{ duration: 0.15 }}
+                            className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-64 z-50 border"
+                            style={{
+                              background: 'var(--bg-card)',
+                              borderColor: 'var(--primary-muted)',
+                            }}
+                          >
+                            <p
+                              className="px-4 pt-4 pb-2 font-mono text-xs uppercase tracking-widest"
+                              style={{ color: 'var(--text-muted)' }}
+                            >
+                              Areas We Serve
+                            </p>
+                            <div className="pb-2">
+                              {siteData.serviceAreas.map((area) => (
+                                <Link
+                                  key={area.slug}
+                                  href={`/areas/${area.slug}`}
+                                  onClick={() => setAreasOpen(false)}
                                   className="flex items-center gap-2 px-4 py-2.5 transition-colors"
                                   style={{ color: 'var(--text-secondary)' }}
                                   onMouseEnter={(e) => {
@@ -115,22 +223,13 @@ export default function Header() {
                                     el.style.background = 'transparent';
                                   }}
                                 >
-                                  <span className="w-1.5 h-1.5 flex-shrink-0" style={{ background: 'var(--primary)' }} />
-                                  <span className="font-body text-sm">{service.shortTitle}</span>
+                                  <span
+                                    className="w-1.5 h-1.5 flex-shrink-0"
+                                    style={{ background: 'var(--primary)' }}
+                                  />
+                                  <span className="font-body text-sm">{area.city}, NH</span>
                                 </Link>
                               ))}
-                            </div>
-                            <div className="border-t px-4 py-3" style={{ borderColor: 'rgba(245,245,245,0.08)' }}>
-                              <Link
-                                href="/services"
-                                onClick={() => setServicesOpen(false)}
-                                className="font-display font-black uppercase text-xs tracking-widest transition-colors"
-                                style={{ color: 'var(--primary)' }}
-                                onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = 'var(--accent)')}
-                                onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = 'var(--primary)')}
-                              >
-                                View All Services →
-                              </Link>
                             </div>
                           </motion.div>
                         )}
@@ -145,77 +244,31 @@ export default function Header() {
                     href={link.href}
                     className="px-3 py-2 font-display font-black uppercase text-sm tracking-widest transition-colors"
                     style={{ color: 'var(--text-secondary)' }}
-                    onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = 'var(--text-primary)')}
-                    onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = 'var(--text-secondary)')}
+                    onMouseEnter={(e) =>
+                      ((e.currentTarget as HTMLElement).style.color = 'var(--text-primary)')
+                    }
+                    onMouseLeave={(e) =>
+                      ((e.currentTarget as HTMLElement).style.color = 'var(--text-secondary)')
+                    }
                   >
                     {link.label}
                   </Link>
                 );
               })}
-
-              {/* ── More dropdown ── */}
-              <div ref={moreRef} className="relative">
-                <button
-                  onClick={() => setMoreOpen(!moreOpen)}
-                  className="flex items-center gap-1.5 px-3 py-2 transition-colors font-display font-black uppercase text-sm tracking-widest"
-                  style={{ color: moreOpen ? 'var(--text-primary)' : 'var(--text-secondary)' }}
-                  onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--text-primary)')}
-                  onMouseLeave={(e) => {
-                    if (!moreOpen) e.currentTarget.style.color = 'var(--text-secondary)';
-                  }}
-                  aria-label="More navigation links"
-                  aria-expanded={moreOpen}
-                >
-                  <AlignJustify size={15} />
-                  <ChevronDown size={12} className={`transition-transform duration-200 ${moreOpen ? 'rotate-180' : ''}`} />
-                </button>
-
-                <AnimatePresence>
-                  {moreOpen && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 8, scale: 0.97 }}
-                      animate={{ opacity: 1, y: 0, scale: 1 }}
-                      exit={{ opacity: 0, y: 8, scale: 0.97 }}
-                      transition={{ duration: 0.15 }}
-                      className="absolute top-full right-0 mt-2 w-52 z-50 border py-2"
-                      style={{ background: 'var(--bg-card)', borderColor: 'var(--primary-muted)' }}
-                    >
-                      {moreLinks.map((link) => (
-                        <Link
-                          key={link.href}
-                          href={link.href}
-                          onClick={() => setMoreOpen(false)}
-                          className="flex items-center gap-2 px-4 py-2.5 transition-colors font-display font-black uppercase text-xs tracking-widest"
-                          style={{ color: 'var(--text-secondary)' }}
-                          onMouseEnter={(e) => {
-                            const el = e.currentTarget as HTMLElement;
-                            el.style.color = 'var(--text-primary)';
-                            el.style.background = 'rgba(215,43,43,0.08)';
-                          }}
-                          onMouseLeave={(e) => {
-                            const el = e.currentTarget as HTMLElement;
-                            el.style.color = 'var(--text-secondary)';
-                            el.style.background = 'transparent';
-                          }}
-                        >
-                          <span className="w-1 h-3.5 flex-shrink-0" style={{ background: 'var(--primary-muted)' }} />
-                          {link.label}
-                        </Link>
-                      ))}
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
             </nav>
 
-            {/* ── Desktop right — phone + CTA ── */}
+            {/* Right Side — Desktop */}
             <div className="hidden lg:flex items-center gap-4">
               <a
                 href={`tel:+${siteData.meta.phoneRaw}`}
                 className="flex items-center gap-2 font-mono font-medium text-sm transition-colors"
                 style={{ color: 'var(--primary)' }}
-                onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = 'var(--accent)')}
-                onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = 'var(--primary)')}
+                onMouseEnter={(e) =>
+                  ((e.currentTarget as HTMLElement).style.color = 'var(--accent)')
+                }
+                onMouseLeave={(e) =>
+                  ((e.currentTarget as HTMLElement).style.color = 'var(--primary)')
+                }
               >
                 <Phone size={14} />
                 {siteData.meta.phone}
@@ -225,15 +278,22 @@ export default function Header() {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 className="px-6 py-3 font-display font-black uppercase text-sm tracking-widest transition-all duration-150"
-                style={{ background: 'var(--primary)', color: 'var(--text-primary)' }}
-                onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.background = 'var(--accent)')}
-                onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.background = 'var(--primary)')}
+                style={{
+                  background: 'var(--primary)',
+                  color: 'var(--text-primary)',
+                }}
+                onMouseEnter={(e) =>
+                  ((e.currentTarget as HTMLElement).style.background = 'var(--accent)')
+                }
+                onMouseLeave={(e) =>
+                  ((e.currentTarget as HTMLElement).style.background = 'var(--primary)')
+                }
               >
                 {siteData.nav.cta.label}
               </motion.a>
             </div>
 
-            {/* ── Mobile right — phone icon + hamburger ── */}
+            {/* Mobile Right */}
             <div className="flex lg:hidden items-center gap-3">
               <a
                 href={`tel:+${siteData.meta.phoneRaw}`}
@@ -247,8 +307,12 @@ export default function Header() {
                 onClick={() => setMobileOpen(true)}
                 className="flex items-center justify-center w-9 h-9 transition-colors"
                 style={{ color: 'var(--text-secondary)' }}
-                onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = 'var(--text-primary)')}
-                onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = 'var(--text-secondary)')}
+                onMouseEnter={(e) =>
+                  ((e.currentTarget as HTMLElement).style.color = 'var(--text-primary)')
+                }
+                onMouseLeave={(e) =>
+                  ((e.currentTarget as HTMLElement).style.color = 'var(--text-secondary)')
+                }
                 aria-label="Open navigation menu"
               >
                 <Menu size={22} />
