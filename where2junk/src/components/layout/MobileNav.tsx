@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { X, Phone } from 'lucide-react';
 import { siteData } from '@/data/site';
+import Where2Logo from './Where2Logo';
 
 interface Props {
   isOpen: boolean;
@@ -38,29 +39,8 @@ export default function MobileNav({ isOpen, onClose }: Props) {
               className="flex items-center justify-between p-5 border-b flex-shrink-0"
               style={{ borderColor: 'rgba(245,245,245,0.08)' }}
             >
-              <Link
-                href="/"
-                onClick={onClose}
-                className="flex items-baseline gap-0 select-none"
-              >
-                <span
-                  className="font-display font-black uppercase text-lg tracking-tight leading-none"
-                  style={{ color: 'var(--text-primary)' }}
-                >
-                  WHERE
-                </span>
-                <span
-                  className="font-display font-black uppercase text-lg tracking-tight leading-none"
-                  style={{ color: 'var(--primary)' }}
-                >
-                  2
-                </span>
-                <span
-                  className="font-display font-black uppercase text-lg tracking-tight leading-none ml-1"
-                  style={{ color: 'var(--text-primary)' }}
-                >
-                  JUNK
-                </span>
+              <Link href="/" onClick={onClose} className="flex items-center select-none" aria-label="Where2 Junk Removal — Home">
+                <Where2Logo />
               </Link>
               <button
                 onClick={onClose}

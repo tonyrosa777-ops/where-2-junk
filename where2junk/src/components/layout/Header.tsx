@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Phone, ChevronDown, Menu } from 'lucide-react';
 import { siteData } from '@/data/site';
 import MobileNav from './MobileNav';
+import Where2Logo from './Where2Logo';
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
@@ -46,25 +47,8 @@ export default function Header() {
           <div className="flex items-center justify-between">
 
             {/* Logo */}
-            <Link href="/" className="flex items-baseline gap-0 select-none">
-              <span
-                className="font-display font-black uppercase text-xl tracking-tight leading-none"
-                style={{ color: 'var(--text-primary)' }}
-              >
-                WHERE
-              </span>
-              <span
-                className="font-display font-black uppercase text-xl tracking-tight leading-none"
-                style={{ color: 'var(--primary)' }}
-              >
-                2
-              </span>
-              <span
-                className="font-display font-black uppercase text-xl tracking-tight leading-none ml-1"
-                style={{ color: 'var(--text-primary)' }}
-              >
-                JUNK
-              </span>
+            <Link href="/" className="flex items-center select-none" aria-label="Where2 Junk Removal — Home">
+              <Where2Logo />
             </Link>
 
             {/* Desktop Nav */}
