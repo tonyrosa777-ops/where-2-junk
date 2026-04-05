@@ -11,7 +11,7 @@ import { siteData } from '@/data/site';
 
 // ─── Types ─────────────────────────────────────────────────────────────────────
 type Avail = 'available' | 'limited' | 'booked' | 'past' | 'closed';
-type Step = 'calendar' | 'time' | 'service';
+type Step = 'calendar' | 'time' | 'service' | 'location';
 
 interface TimeSlot {
   label: string;
@@ -82,10 +82,11 @@ const slide = {
 // ─── Confirmation Modal ─────────────────────────────────────────────────────────
 function ConfirmModal({
   isOpen, onClose,
-  selectedDate, selectedTime, selectedService,
+  selectedDate, selectedTime, selectedService, selectedLocation,
 }: {
   isOpen: boolean; onClose: () => void;
   selectedDate: Date | null; selectedTime: string | null; selectedService: Service | null;
+  selectedLocation: string | null;
 }) {
   const calendlyUrl = process.env.NEXT_PUBLIC_CALENDLY_URL ?? '';
   const hasCalendly = Boolean(calendlyUrl);
@@ -172,9 +173,10 @@ function ConfirmModal({
                   {/* Summary */}
                   <div className="rounded-xl p-4 space-y-3" style={{ background: 'var(--bg-elevated)' }}>
                     {[
-                      { label: 'Date',    value: selectedDate ? fmtDate(selectedDate) : '' },
-                      { label: 'Time',    value: selectedTime ?? '' },
-                      { label: 'Service', value: selectedService ? `${selectedService.name} · ${selectedService.price}` : '' },
+                      { label: 'Date',     value: selectedDate ? fmtDate(selectedDate) : '' },
+                      { label: 'Time',     value: selectedTime ?? '' },
+                      { label: 'Service',  value: selectedService ? `${selectedService.name} · ${selectedService.price}` : '' },
+                      { label: 'Location', value: selectedLocation ?? '' },
                     ].filter(r => r.value).map(row => (
                       <div key={row.label} className="flex justify-between items-start gap-4 text-sm">
                         <span className="font-mono text-[10px] uppercase tracking-widest flex-shrink-0 mt-0.5"
@@ -221,8 +223,10 @@ export function BookingCalendar() {
   const [viewYear,  setViewYear]  = useState(today.getFullYear());
   const [viewMonth, setViewMonth] = useState(today.getMonth());
   const [selected,        setSelected]        = useState<Date | null>(null);
-  const [selectedTime,    setSelectedTime]    = useState<string | null>(null);
-  const [selectedService, setSelectedService] = useState<Service | null>(null);
+  const [selectedTime,     setSelectedTime]     = useState<string | null>(null);
+  const [selectedService,  setSelectedService]  = useState<Service | null>(null);
+  const [selectedLocation, setSelectedLocation] = useState<string | null>(null);
+  const [otherLocation,    setOtherLocation]    = useState('');
   const [step,       setStep]       = useState<Step>('calendar');
   const [modalOpen,  setModalOpen]  = useState(false);
 
@@ -255,6 +259,7 @@ export function BookingCalendar() {
 
   function reset() {
     setSelected(null); setSelectedTime(null); setSelectedService(null);
+    setSelectedLocation(null); setOtherLocation('');
     setStep('calendar');
   }
 
@@ -527,7 +532,7 @@ export function BookingCalendar() {
 
                   <motion.button
                     disabled={!selectedService}
-                    onClick={() => { if (selectedService) setModalOpen(true); }}
+                    onClick={() => { if (selectedService) { setSelectedLocation(null); setOtherLocation(''); setStep('location'); } }}
                     whileTap={{ scale: 0.97 }}
                     className="w-full rounded-xl py-3.5 font-display font-black uppercase text-sm tracking-widest transition-all duration-200"
                     style={{
@@ -537,8 +542,129 @@ export function BookingCalendar() {
                       border: `1px solid ${selectedService ? 'var(--primary)' : 'rgba(215,43,43,0.2)'}`,
                     }}
                   >
-                    Book This Slot →
+                    Next: Pick Location →
                   </motion.button>
+                </motion.div>
+              )}
+
+              {/* Step 3 — location */}
+              {step === 'location' && selected && selectedTime && selectedService && (
+                <motion.div key="location" variants={slide} initial="enter" animate="center" exit="exit">
+                  <button onClick={() => setStep('service')}
+                    className="flex items-center gap-1.5 mb-4 text-[10px] uppercase tracking-widest transition-opacity opacity-50 hover:opacity-100"
+                    style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-primary)' }}>
+                    <svg width="12" height="12" fill="none" stroke="currentColor" strokeWidth="1.75" viewBox="0 0 12 12">
+                      <path d="M8 2L3 6l5 4" />
+                    </svg>
+                    Back
+                  </button>
+                  <p className="font-mono text-[10px] uppercase tracking-widest mb-1" style={{ color: 'var(--primary)' }}>
+                    {fmtDate(selected)} · {selectedTime}
+                  </p>
+                  <p className="font-display font-black uppercase text-lg mb-4" style={{ color: 'var(--text-primary)' }}>
+                    Where Are We Going?
+                  </p>
+
+                  {/* Service area chips */}
+                  <div className="grid grid-cols-2 gap-2 mb-3">
+                    {siteData.serviceAreas.map(area => {
+                      const chosen = selectedLocation === area.city;
+                      return (
+                        <button
+                          key={area.slug}
+                          onClick={() => { setSelectedLocation(area.city); setOtherLocation(''); }}
+                          className="rounded-xl px-3 py-2.5 text-left transition-all duration-150"
+                          style={{
+                            background: chosen ? 'var(--primary)' : 'var(--bg-elevated)',
+                            border: `1px solid ${chosen ? 'var(--primary)' : 'rgba(215,43,43,0.25)'}`,
+                          }}
+                          onMouseEnter={e => { if (!chosen) (e.currentTarget as HTMLElement).style.background = 'var(--bg-base)'; }}
+                          onMouseLeave={e => { if (!chosen) (e.currentTarget as HTMLElement).style.background = 'var(--bg-elevated)'; }}
+                        >
+                          <span className="font-display font-black uppercase text-xs"
+                            style={{ color: chosen ? '#fff' : 'var(--text-primary)' }}>
+                            {area.city}
+                          </span>
+                          <span className="font-body text-[10px] block mt-0.5"
+                            style={{ color: chosen ? 'rgba(255,255,255,0.6)' : 'var(--text-muted)' }}>
+                            {area.county} County
+                          </span>
+                        </button>
+                      );
+                    })}
+
+                    {/* Other chip */}
+                    <button
+                      onClick={() => setSelectedLocation('other')}
+                      className="rounded-xl px-3 py-2.5 text-left transition-all duration-150"
+                      style={{
+                        background: selectedLocation === 'other' ? 'var(--bg-elevated)' : 'transparent',
+                        border: `1px solid ${selectedLocation === 'other' ? 'var(--primary)' : 'rgba(215,43,43,0.25)'}`,
+                      }}
+                      onMouseEnter={e => { if (selectedLocation !== 'other') (e.currentTarget as HTMLElement).style.borderColor = 'var(--primary)'; }}
+                      onMouseLeave={e => { if (selectedLocation !== 'other') (e.currentTarget as HTMLElement).style.borderColor = 'rgba(215,43,43,0.25)'; }}
+                    >
+                      <span className="font-display font-black uppercase text-xs"
+                        style={{ color: selectedLocation === 'other' ? 'var(--primary)' : 'var(--text-secondary)' }}>
+                        Other
+                      </span>
+                      <span className="font-body text-[10px] block mt-0.5" style={{ color: 'var(--text-muted)' }}>
+                        Josh will reach out
+                      </span>
+                    </button>
+                  </div>
+
+                  {/* Other text input */}
+                  {selectedLocation === 'other' && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -6 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.18 }}
+                      className="mb-4"
+                    >
+                      <input
+                        type="text"
+                        placeholder="City, town, or address..."
+                        value={otherLocation}
+                        onChange={e => setOtherLocation(e.target.value)}
+                        autoFocus
+                        className="w-full rounded-xl px-4 py-3 font-body text-sm outline-none transition-colors"
+                        style={{
+                          background: 'var(--bg-elevated)',
+                          border: '1px solid var(--primary)',
+                          color: 'var(--text-primary)',
+                        }}
+                      />
+                      <p className="font-mono text-[10px] uppercase tracking-widest mt-2" style={{ color: 'var(--text-muted)' }}>
+                        Josh will confirm if we can make it happen
+                      </p>
+                    </motion.div>
+                  )}
+
+                  {/* Book button */}
+                  {(() => {
+                    const locationReady = selectedLocation !== null &&
+                      (selectedLocation !== 'other' || otherLocation.trim().length > 0);
+                    const finalLocation = selectedLocation === 'other'
+                      ? `${otherLocation.trim()} (outside service area)`
+                      : selectedLocation;
+                    return (
+                      <motion.button
+                        disabled={!locationReady}
+                        onClick={() => { if (locationReady) { setSelectedLocation(finalLocation); setModalOpen(true); } }}
+                        whileTap={{ scale: 0.97 }}
+                        className="w-full rounded-xl py-3.5 font-display font-black uppercase text-sm tracking-widest transition-all duration-200 mt-2"
+                        style={{
+                          background: locationReady ? 'var(--primary)' : 'var(--bg-elevated)',
+                          color: locationReady ? '#fff' : 'var(--text-muted)',
+                          cursor: locationReady ? 'pointer' : 'default',
+                          border: `1px solid ${locationReady ? 'var(--primary)' : 'rgba(215,43,43,0.2)'}`,
+                        }}
+                      >
+                        Book This Slot →
+                      </motion.button>
+                    );
+                  })()}
                 </motion.div>
               )}
 
@@ -553,6 +679,7 @@ export function BookingCalendar() {
         selectedDate={selected}
         selectedTime={selectedTime}
         selectedService={selectedService}
+        selectedLocation={selectedLocation}
       />
     </>
   );
