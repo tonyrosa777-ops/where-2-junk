@@ -2,9 +2,10 @@
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Phone, ChevronDown, Menu } from 'lucide-react';
+import { Phone, ChevronDown, Menu, ShoppingBag } from 'lucide-react';
 import { siteData } from '@/data/site';
 import MobileNav from './MobileNav';
+import { useCart } from '@/lib/cart';
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
@@ -13,6 +14,7 @@ export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const areasDropdownRef = useRef<HTMLDivElement>(null);
+  const { count, openCart } = useCart();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -273,6 +275,24 @@ export default function Header() {
                 <Phone size={14} />
                 {siteData.meta.phone}
               </a>
+              <button
+                onClick={openCart}
+                className="relative flex items-center justify-center w-9 h-9 transition-colors"
+                style={{ color: 'var(--text-secondary)' }}
+                onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = 'var(--text-primary)')}
+                onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = 'var(--text-secondary)')}
+                aria-label={`Cart (${count} items)`}
+              >
+                <ShoppingBag size={18} />
+                {count > 0 && (
+                  <span
+                    className="absolute -top-1 -right-1 w-4 h-4 rounded-full flex items-center justify-center font-mono text-[10px] font-bold"
+                    style={{ background: 'var(--primary)', color: '#fff' }}
+                  >
+                    {count}
+                  </span>
+                )}
+              </button>
               <motion.a
                 href={siteData.nav.cta.href}
                 whileHover={{ scale: 1.02 }}

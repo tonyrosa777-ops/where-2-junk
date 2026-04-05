@@ -1,0 +1,13 @@
+{
+  "storeId": 0,
+  "products": [
+    { "printful_id": 1001, "slug": "where2junk-logo-tee", "name": "WHERE2JUNK Logo Tee", "price": 28.99, "category": "Apparel" },
+    { "printful_id": 1002, "slug": "you-point-we-haul-hoodie", "name": "You Point We Haul Hoodie", "price": 49.99, "category": "Apparel" },
+    { "printful_id": 1003, "slug": "manchesters-hauler-snapback", "name": "Manchester's Hauler Snapback", "price": 24.99, "category": "Headwear" },
+    { "printful_id": 1004, "slug": "where2junk-work-tank", "name": "WHERE2JUNK Work Tank", "price": 22.99, "category": "Apparel" },
+    { "printful_id": 1005, "slug": "nh-hauler-tumbler", "name": "NH Hauler Tumbler 20oz", "price": 34.99, "category": "Drinkware" },
+    { "printful_id": 1006, "slug": "where2junk-tote-bag", "name": "WHERE2JUNK Logo Tote", "price": 19.99, "category": "Bags" },
+    { "printful_id": 1007, "slug": "junk-hauler-beanie", "name": "Junk Hauler Beanie", "price": 21.99, "category": "Headwear" },
+    { "printful_id": 1008, "slug": "manchester-nh-long-sleeve", "name": "Manchester NH Long Sleeve", "price": 34.99, "category": "Apparel" }
+  ]
+}

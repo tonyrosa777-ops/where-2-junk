@@ -4,6 +4,8 @@ import './globals.css';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import StickyCallBar from '@/components/layout/StickyCallBar';
+import { CartProvider } from '@/lib/cart';
+import CartDrawer from '@/components/shop/CartDrawer';
 
 const barlowCondensed = Barlow_Condensed({
   variable: '--font-barlow-condensed',
@@ -58,10 +60,13 @@ export default function RootLayout({
       className={`${barlowCondensed.variable} ${barlow.variable} ${jetbrainsMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-[var(--bg-base)] text-[var(--text-primary)]">
-        <Header />
-        {children}
-        <Footer />
-        <StickyCallBar />
+        <CartProvider>
+          <Header />
+          {children}
+          <Footer />
+          <StickyCallBar />
+          <CartDrawer />
+        </CartProvider>
       </body>
     </html>
   );

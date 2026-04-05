@@ -39,6 +39,7 @@ export const siteData = {
       { label: 'FAQ', href: '/faq' },
       { label: 'Pricing', href: '/pricing' },
       { label: 'Contact', href: '/contact' },
+      { label: 'Shop', href: '/shop' },
     ],
     cta: { label: 'Book Now', href: '/booking' },
     stickyBar: {
