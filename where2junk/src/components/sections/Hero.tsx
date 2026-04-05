@@ -22,10 +22,10 @@ export default function Hero() {
       <HeroEffects />
 
       {/* ── Content layer — z-10, above animation ── */}
-      <div className="relative z-10 w-full min-h-screen flex items-center">
+      <div className="relative z-10 w-full min-h-screen flex items-start lg:items-center">
         <div
           className="w-full max-w-[var(--container-wide)] mx-auto px-4 sm:px-6 lg:px-8"
-          style={{ paddingTop: 'clamp(80px, 12vh, 128px)', paddingBottom: 'clamp(64px, 10vh, 112px)' }}
+          style={{ paddingTop: 'clamp(28px, 5vh, 128px)', paddingBottom: 'clamp(64px, 10vh, 112px)' }}
         >
           {/* Desktop: two-column. Mobile: single column */}
           <div className="grid grid-cols-1 lg:grid-cols-[55%_45%] gap-8 lg:gap-12 items-center">
